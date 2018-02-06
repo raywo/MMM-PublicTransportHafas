@@ -1,0 +1,8 @@
+/*
+All classes used by this module use the prefix "pth" (PublicTransportHafas) to separate
+them from the rest of the interface.
+ */
+
+.pthWrapper {
+  position: relative;
+}
