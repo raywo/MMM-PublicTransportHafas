@@ -1,0 +1,37 @@
+{
+  "name": "MMM-PublicTransportHafas",
+  "version": "0.1.0",
+  "description": "Public transport module for MagicMirror 2 driven by hafas-client data.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raywo/MMM-PublicTransportHafas"
+  },
+  "keywords": [
+    "magic mirror",
+    "magic mirror 2",
+    "smart mirror",
+    "public transport",
+    "public transport Leipzig",
+    "module"
+  ],
+  "author": {
+    "name": "raywo",
+    "email": "ray@skillbird.de",
+    "url": ""
+  },
+  "contributors": "https://github.com/raywo/MMM-PublicTransportHafas/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raywo/MMM-PublicTransportHafas/issues"
+  },
+  "homepage": "https://github.com/raywo/MMM-PublicTransportHafas",
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "db-hafas": "^2.1.0",
+    "lodash.isobject": "^3.0.2",
+    "lvb": "0.0.2",
+    "stylelint": "^8.4.0"
+  }
+}
