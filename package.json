@@ -29,9 +29,9 @@
     "node": ">=6"
   },
   "dependencies": {
-    "db-hafas": "^2.1.0",
     "lodash.isobject": "^3.0.2",
     "lvb": "0.0.2",
-    "stylelint": "^8.4.0"
+    "stylelint": "^8.4.0",
+    "hafas-client": "latest"
   }
 }
