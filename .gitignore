@@ -91,3 +91,4 @@ jspm_packages
 *.xml
 
 *.iml
+package-lock.json
