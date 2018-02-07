@@ -1,0 +1,3 @@
+{
+  "NO_STATION_ID_SET": "You have not provided a stationID!<br>Please set stationID in config.js!"
+}
