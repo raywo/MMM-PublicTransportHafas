@@ -12,12 +12,16 @@ module.exports = NodeHelper.create({
 
 
   socketNotificationReceived: function(notification, payload) {
-    if (notification === "CREATE_FETCHER") {
-      this.createFetcher(payload);
-    }
+    console.log("node helper received notification: " + notification);
 
-    if (notification === "FETCH_DEPARTURES") {
-      this.fetchDepartures(payload);
+    switch (notification) {
+      case "CREATE_FETCHER":
+        this.createFetcher(payload);
+        break;
+
+      case "FETCH_DEPARTURES":
+        this.fetchDepartures(payload);
+        break;
     }
   },
 
@@ -28,15 +32,15 @@ module.exports = NodeHelper.create({
     if (typeof this.departuresFetchers[config.stationID] === "undefined") {
       fetcher = new HafasFetcher(config);
       this.departuresFetchers[config.stationID] = fetcher;
-      this.sendFetcherLoaded(fetcher);
-
       console.log("Transportation fetcher for station '" + fetcher.getStationName() + "' created. (Station ID: " + fetcher.getStationID() + ")");
+
+      this.sendFetcherLoaded(fetcher);
 
     } else {
       fetcher = this.departuresFetchers[config.stationID];
-      this.sendFetcherLoaded(fetcher);
-
       console.log("Using existing transportation fetcher for station '" + fetcher.getStationName() + "' (Station ID: " + fetcher.getStationID() + ")");
+
+      this.sendFetcherLoaded(fetcher);
     }
   },
 
@@ -52,7 +56,20 @@ module.exports = NodeHelper.create({
   fetchDepartures(stationID) {
     let fetcher = this.departuresFetchers[stationID];
 
-    // TODO: Implement .then and sendNotification()
-    fetcher.fetchDepartures();
+    fetcher.fetchDepartures().then((fetchedDepartures) => {
+      let payload = {
+        stationID: fetcher.getStationID(),
+        departures: fetchedDepartures
+      };
+
+      this.sendSocketNotification("DEPARTURES_FETCHED", payload);
+    }).catch((error) => {
+      let payload = {
+        stationID: fetcher.getStationID(),
+        error: error
+      };
+
+      this.sendSocketNotification("FETCH_ERROR", payload);
+    });
   }
 });

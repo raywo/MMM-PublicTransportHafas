@@ -16,7 +16,7 @@ Module.register("MMM-PublicTransportHafas", {
     //stationID: "008012202",
 
     // Departures options
-    directions: [],                     // Which directions should be included? (List of station IDs.)
+    direction: "",                      // Show only departures heading to this station. (A station ID.)
     ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
     excludedTransportationTypes: [],    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
     timeToStation: 10,                  // How long do you need to walk to the next Station?
@@ -56,7 +56,7 @@ Module.register("MMM-PublicTransportHafas", {
     let fetcherOptions = {
       stationID: this.config.stationID,
       timeToStation: this.config.timeToStation,
-      directions: this.config.directions,
+      direction: this.config.direction,
       ignoredLines: this.config.ignoredLines,
       excludedTransportationTypes: this.config.excludedTransportationTypes
     };
@@ -76,7 +76,7 @@ Module.register("MMM-PublicTransportHafas", {
       return domBuilder.getSimpleDom(this.translate("LOADING"));
     }
 
-    return domBuilder.getDom();
+    return domBuilder.getDom(this.departures);
   },
 
 
@@ -105,40 +105,42 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   socketNotificationReceived: function (notification, payload) {
-    if (this.isThisStation(payload)) {
-      if (notification === 'FETCHER_INITIALIZED') {
+    Log.info(this.config.name + " (main module) received notification: " + notification);
+
+    if (!this.isForThisStation(payload)) {
+      return;
+    }
+
+    switch (notification) {
+      case "FETCHER_INITIALIZED":
         this.stationName = payload.stationName;
         this.initialized = true;
         this.startFetchingLoop(this.config.updatesEvery);
-      }
-    }
 
-    // if (notification === 'DEPARTURES') {
-    //   this.config.initialized = true;
-    //
-    //   if (this.isThisStation(payload)) {
-    //     // Empty error object
-    //     this.error = {};
-    //     // Proceed with normal operation
-    //     this.departuresArray = payload.departuresArray;
-    //     this.updateDom(3000);
-    //   }
-    // }
-    //
-    // if (notification === 'FETCH_ERROR') {
-    //   this.config.initialized = true;
-    //
-    //   if (this.isThisStation(payload)) {
-    //     // Empty error object
-    //     this.error = payload;
-    //     this.updateDom(3000);
-    //   }
-    // }
+        break;
+
+      case "DEPARTURES_FETCHED":
+        // reset error object
+        this.error = {};
+        this.departures = payload.departures;
+        this.updateDom(2000);
+
+        // TODO: Remove!
+        Log.info(this.departures);
+        break;
+
+      case "FETCH_ERROR":
+        this.error = payload.error;
+        this.departures = [];
+        this.updateDom(2000);
+
+        break;
+    }
   },
 
 
-  isThisStation: function (station) {
-    return station.stationID === this.config.stationID;
+  isForThisStation: function (payload) {
+    return payload.stationID === this.config.stationID;
   },
 
 
@@ -162,6 +164,10 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   startFetchingLoop: function(interval) {
+    // start immediately ...
+    this.sendSocketNotification("FETCH_DEPARTURES", this.config.stationID);
+
+    // ... and then repeat in the given interval
     setInterval(() => {
       this.sendSocketNotification("FETCH_DEPARTURES", this.config.stationID);
     }, interval * 1000);

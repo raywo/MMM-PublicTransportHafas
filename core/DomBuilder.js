@@ -4,6 +4,7 @@ class DomBuilder {
 
   constructor(config) {
     this.config = config;
+    this.departures = [];
   }
 
 
@@ -16,11 +17,15 @@ class DomBuilder {
   }
 
 
-  getDom() {
+  getDom(departures) {
+    this.departures = departures;
+
     // TODO: Replace stub with real code.
     let wrapper = this.getWrapper();
     wrapper.appendChild(this.createHeadingElement(this.config.headerPrefix, this.config.stationName, this.config.headerAppendix));
-    wrapper.appendChild(this.getDiv("So wird es dann aussehen."));
+
+    let tmpDiv = this.getDiv(this.departures);
+    wrapper.appendChild(tmpDiv);
 
     return wrapper;
   }
