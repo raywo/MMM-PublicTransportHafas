@@ -12,8 +12,6 @@ module.exports = NodeHelper.create({
 
 
   socketNotificationReceived: function(notification, payload) {
-    console.log("node helper received notification: " + notification);
-
     switch (notification) {
       case "CREATE_FETCHER":
         this.createFetcher(payload);
