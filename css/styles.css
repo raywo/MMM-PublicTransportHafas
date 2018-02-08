@@ -55,9 +55,26 @@ them from the rest of the interface.
   margin-right: 0.5rem;
   padding-left: 5px;
   padding-right: 5px;
+  min-width: 3.8rem;
 }
 
 .pthBWLineSign {
-  color: white;
+  color: #666666;
   background-color: #333333;
+}
+
+/* Standards for Deutsche Bahn products. */
+.ice, .ic {
+  color: white;
+  background-color: #F01414;
+  border-left: 6px white solid;
+  padding-left: 2px;
+  min-width: 3.8em;
+  border-radius: 5px;
+}
+
+.rb, .re {
+  color: #F01414;
+  background-color: white;
+  border-radius: 5px;
 }

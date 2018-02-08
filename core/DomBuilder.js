@@ -157,22 +157,22 @@ class DomBuilder {
 
   getDelayCell(delay) {
     let cell = this.getTableCell(this.getDelay(delay));
-    let cssClass = delay < 0 ? "pthHasDelay" : "pthIsTooEarly";
+    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
     cell.className = "pthDelayCell " + cssClass;
 
     return cell;
-  }
-
-  getDepartureTime(when, delay) {
-    let time = moment(when).subtract(delay, "seconds");
-
-    return time.format("LT");
   }
 
   getDelay(delay) {
     let sign = delay < 0 ? "-" : "+";
 
     return sign + delay / 60 + "&nbsp;";
+  }
+
+  getDepartureTime(when, delay) {
+    let time = moment(when).subtract(delay, "seconds");
+
+    return time.format("LT");
   }
 
   getLineCell(lineName) {
@@ -185,9 +185,20 @@ class DomBuilder {
 
   getLineCssClass(lineName) {
     if (this.config.showColoredLineSymbols) {
-      return "pthSign " + lineName.replace(/\s/g, '').toLowerCase();
+      let className = "pthSign ";
+      let prefix = lineName.split(" ")[0];
+      let dbProducts = [ "RE", "RB", "IC", "ICE" ];
+
+      if (dbProducts.includes(prefix)) {
+        className += prefix.toLowerCase();
+      } else {
+        className += lineName.replace(/\s/g, '').toLowerCase()
+      }
+
+      return className;
+
     } else {
-      return "pthSign pthBWLineSign xsmall";
+      return "pthSign pthBWLineSign";
     }
   }
 }
