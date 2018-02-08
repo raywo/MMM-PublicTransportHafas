@@ -1,3 +1,8 @@
 {
-  "NO_STATION_ID_SET": "Sie haben keine stationID eingegeben!<br>Bitte ergänzen Sie die ID in config.js!"
+  "NO_STATION_ID_SET": "Sie haben keine stationID eingegeben!<br>Bitte ergänzen Sie die ID in config.js!",
+  "PTH_NO_DEPARTURES": "Es gibt keine erreichbaren Abfahrten.",
+
+  "PTH_DEPARTURE_TIME": "Abfahrt",
+  "PTH_LINE": "Linie",
+  "PTH_TO": "Nach"
 }

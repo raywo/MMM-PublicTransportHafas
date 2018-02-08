@@ -20,6 +20,7 @@ Module.register("MMM-PublicTransportHafas", {
     ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
     excludedTransportationTypes: [],    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
     timeToStation: 10,                  // How long do you need to walk to the next Station?
+    timeInFuture: 10,                   // Show departures for the next *timeInFuture* minutes.
 
     // Look and Feel
     marqueeLongDirections: true,        // Use Marquee effect for long station names?
@@ -31,7 +32,8 @@ Module.register("MMM-PublicTransportHafas", {
     maxReachableDepartures: 7,          // How many reachable departures should be shown?
     fadeUnreachableDepartures: true,
     fadeReachableDepartures: true,
-    fadePointForReachableDepartures: 0.25
+    fadePointForReachableDepartures: 0.25,
+    customLineStyles: "Leipzig"         // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
   },
 
 
@@ -56,6 +58,7 @@ Module.register("MMM-PublicTransportHafas", {
     let fetcherOptions = {
       stationID: this.config.stationID,
       timeToStation: this.config.timeToStation,
+      timeInFuture: this.config.timeInFuture,
       direction: this.config.direction,
       ignoredLines: this.config.ignoredLines,
       excludedTransportationTypes: this.config.excludedTransportationTypes
@@ -76,15 +79,33 @@ Module.register("MMM-PublicTransportHafas", {
       return domBuilder.getSimpleDom(this.translate("LOADING"));
     }
 
-    return domBuilder.getDom(this.departures);
+    let headings = {
+      time: this.translate("PTH_DEPARTURE_TIME"),
+      delay: "&nbsp;",
+      line: this.translate("PTH_LINE"),
+      direction: this.translate("PTH_TO")
+    };
+
+    Log.info(headings);
+
+    let noDeparturesMessage = this.translate("PTH_NO_DEPARTURES");
+
+    return domBuilder.getDom(this.departures, headings, noDeparturesMessage);
   },
 
 
   getStyles: function () {
-    return [
+    let styles = [
       this.file("css/styles.css"),
       "font-awesome.css"
     ];
+
+    if (this.config.customLineStyles !== "") {
+      let customStyle = "css/" + this.config.customLineStyles + "-lines.css";
+      styles.push(this.file(customStyle));
+    }
+
+    return styles;
   },
 
 

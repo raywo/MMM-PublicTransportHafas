@@ -12,6 +12,7 @@ module.exports = class HafasFetcher {
    *        config = {
    *          stationID: *a valid station id*,
    *          timeToStation: *an integer describing how long it takes to get to the station (in minutes)*,
+   *          timeInFuture: *an integer describing how far in the future the departure can lie*
    *          direction: *an array of station ids*,
    *          ignoredLines: *an array of line names which are to be ignored*,
    *          excludedTransportationTypes: *an array of product names which are not to be shown*
@@ -36,7 +37,8 @@ module.exports = class HafasFetcher {
   fetchDepartures() {
     let options = {
       when: this.getDepartureTime(),
-      direction: this.config.direction
+      direction: this.config.direction,
+      duration: this.config.timeInFuture
     };
 
     return this.hafasClient.departures(this.config.stationID, options);
