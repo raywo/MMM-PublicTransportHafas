@@ -10,32 +10,38 @@
 .s1, .s2, .s3, .s4, .s5, .s5x, .s6 {
   color: white;
   background-color: #1E944B;
+  width: 2em;
   border-radius: 1.25rem;
 }
 
 .str1, .str3, .str3e {
   color: white;
   background-color: #5EB246;
+  width: 1em;
 }
 
 .str2, .str8, .str9 {
   color: black;
   background-color: #F8C623;
+  width: 1em;
 }
 
 .str14 {
   color: black;
   background-color: #00A8DB;
+  width: 1em;
 }
 
 .str4, .str7, .str12, .str15 {
   color: white;
   background-color: #174489;
+  width: 1em;
 }
 
 .str10, .str11, .str16 {
   color: white;
   background-color: #D8232A;
+  width: 1em;
 }
 
 .bus65,
@@ -44,6 +50,8 @@
 .bus90 {
   color: white;
   background-color: #912A7D;
+  width: 1em;
+  border-radius: 1em;
 }
 
 .bus61, .bus63,
@@ -61,19 +69,27 @@
 .bus724, .bus743 {
   color: white;
   background-color: #A3A3A2;
+  width: 1em;
+  border-radius: 40px;
 }
 
 .busn1, .busn1e, .busn5, .busn5e, .busn8, .busn8e {
   color: #164585;
   background-color: #EE9F2E;
+  width: 1em;
+  border-radius: 40px;
 }
 
 .busn2, .busn2e, .busn7, .busn7e {
   color: #164585;
   background-color: #FBDE89;
+  width: 1em;
+  border-radius: 40px;
 }
 
 .busn3, .busn3e, .busn4, .busn4e, .busn6, .busn6e, .busn9, .busn9e {
   color: #164585;
   background-color: #FCD120;
+  width: 1em;
+  border-radius: 40px;
 }

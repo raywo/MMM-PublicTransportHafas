@@ -49,13 +49,14 @@ them from the rest of the interface.
   font-weight: bold;
   text-align: center;
   position: relative;
-  border-radius: 0.075rem;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
   margin-right: 0.5rem;
   padding-left: 5px;
   padding-right: 5px;
-  min-width: 3.8rem;
+
+  color: #666666;
+  background-color: #333333
 }
 
 .pthBWLineSign {
@@ -64,17 +65,36 @@ them from the rest of the interface.
 }
 
 /* Standards for Deutsche Bahn products. */
-.ice, .ic {
-  color: white;
-  background-color: #F01414;
-  border-left: 6px white solid;
-  padding-left: 2px;
-  min-width: 3.8em;
+.dbStandard {
+  font-size: 0.8em;
+  line-height: 1.4em;
   border-radius: 5px;
 }
 
-.rb, .re {
+.ice, .ic {
   color: #F01414;
   background-color: white;
-  border-radius: 5px;
+  border-bottom: 4px #F01414 solid;
+}
+
+.rb, .re {
+  color: white;
+  background-color: #F01414;
+  border: 0.5px white solid;
+}
+
+.ice:before {
+  content: "ICE ";
+}
+
+.ic:before {
+  content: "IC ";
+}
+
+.re:before {
+  content: "RE ";
+}
+
+.rb:before {
+  content: "RB ";
 }

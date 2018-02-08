@@ -176,8 +176,16 @@ class DomBuilder {
   }
 
   getLineCell(lineName) {
+    let line;
+
+    if (this.config.showOnlyLineNumbers && lineName.indexOf(" ") !== -1) {
+      line = lineName.split(" ")[1];
+    } else {
+      line = lineName;
+    }
+
     let lineDiv = document.createElement("div");
-    lineDiv.innerHTML = lineName;
+    lineDiv.innerHTML = line;
     lineDiv.className = this.getLineCssClass(lineName);
 
     return this.getTableCell(lineDiv);
@@ -190,7 +198,7 @@ class DomBuilder {
       let dbProducts = [ "RE", "RB", "IC", "ICE" ];
 
       if (dbProducts.includes(prefix)) {
-        className += prefix.toLowerCase();
+        className += prefix.toLowerCase() + " dbStandard";
       } else {
         className += lineName.replace(/\s/g, '').toLowerCase()
       }
