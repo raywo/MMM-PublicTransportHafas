@@ -36,6 +36,13 @@ them from the rest of the interface.
   font-weight: bolder;
 }
 
+.pthDirectionCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 26ch;
+}
+
 .pthHasDelay {
   color: red;
 }
@@ -44,6 +51,31 @@ them from the rest of the interface.
   color: green;
 }
 
+.pthMarquee {
+  text-align: left;
+  box-sizing: border-box;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pthMarquee span {
+  display: inline-block;
+  white-space: nowrap;
+  animation: pthMarquee 2s linear infinite alternate;
+}
+
+@keyframes pthMarquee {
+  /* Two keyframe positions each to generate a little delay between animations. */
+  0%, 30% {
+    transform: translate(0%, 0);
+  }
+  95%, 100% {
+    transform: translate(-20%, 0);
+  }
+}
+
+/* Styles for line symbols. */
 .pthSign {
   font-size: 0.9em;
   font-weight: bold;
@@ -65,7 +97,7 @@ them from the rest of the interface.
 }
 
 /* Standards for Deutsche Bahn products. */
-.dbStandard {
+.pthDbStandard {
   font-size: 0.8em;
   line-height: 1.4em;
   border-radius: 5px;
