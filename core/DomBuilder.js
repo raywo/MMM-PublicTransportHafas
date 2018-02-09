@@ -150,7 +150,7 @@ class DomBuilder {
     row.appendChild(this.getTableCell(time));
     row.appendChild(this.getDelayCell(delay));
     row.appendChild(this.getLineCell(line));
-    row.appendChild(this.getTableCell(direction));
+    row.appendChild(this.getDirectionCell(direction));
 
     return row;
   }
@@ -198,9 +198,9 @@ class DomBuilder {
       let dbProducts = [ "RE", "RB", "IC", "ICE" ];
 
       if (dbProducts.includes(prefix)) {
-        className += prefix.toLowerCase() + " dbStandard";
+        className += prefix.toLowerCase() + " pthDbStandard";
       } else {
-        className += lineName.replace(/\s/g, '').toLowerCase()
+        className += lineName.replace(/\s/g, '').toLowerCase();
       }
 
       return className;
@@ -208,5 +208,19 @@ class DomBuilder {
     } else {
       return "pthSign pthBWLineSign";
     }
+  }
+
+  getDirectionCell(direction) {
+    let truncatePosition = 26;
+    let content = direction;
+    let className = "pthDirectionCell";
+
+    if (this.config.marqueeLongDirections && content.length > truncatePosition) {
+      content = document.createElement("span");
+      content.innerHTML = direction;
+      className += " pthMarquee";
+    }
+
+    return this.getTableCell(content, className);
   }
 }
