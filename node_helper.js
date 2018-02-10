@@ -29,14 +29,15 @@ module.exports = NodeHelper.create({
 
     if (typeof this.departuresFetchers[config.stationID] === "undefined") {
       fetcher = new HafasFetcher(config);
+      // TODO: Use something else as index to make two module instances with the same stationID possible.
       this.departuresFetchers[config.stationID] = fetcher;
-      console.log("Transportation fetcher for station '" + fetcher.getStationName() + "' created. (Station ID: " + fetcher.getStationID() + ")");
+      console.log("Transportation fetcher for station with id '" + fetcher.getStationID() + "' created.");
 
       this.sendFetcherLoaded(fetcher);
 
     } else {
       fetcher = this.departuresFetchers[config.stationID];
-      console.log("Using existing transportation fetcher for station '" + fetcher.getStationName() + "' (Station ID: " + fetcher.getStationID() + ")");
+      console.log("Using existing transportation fetcher for station id '" + fetcher.getStationID() + "'.");
 
       this.sendFetcherLoaded(fetcher);
     }
@@ -45,8 +46,8 @@ module.exports = NodeHelper.create({
 
   sendFetcherLoaded: function (fetcher) {
     this.sendSocketNotification("FETCHER_INITIALIZED", {
-      stationID: fetcher.getStationID(),
-      stationName: fetcher.getStationName()
+      // TODO: Use something else as index to make two module instances with the same stationID possible.
+      stationID: fetcher.getStationID()
     });
   },
 

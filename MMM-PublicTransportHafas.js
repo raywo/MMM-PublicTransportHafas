@@ -12,8 +12,6 @@ Module.register("MMM-PublicTransportHafas", {
     // Header
     headerPrefix: "",
     headerAppendix: "",
-    stationName: "Wilhelm-Leuschner-Platz",
-    //stationID: "008012202",
 
     // Departures options
     direction: "",                      // Show only departures heading to this station. (A station ID.)
@@ -42,7 +40,6 @@ Module.register("MMM-PublicTransportHafas", {
     Log.info("Starting module: " + this.name);
 
     this.departures = [];
-    this.stationName = "";
     this.initialized = false;
     this.error = {};
 
@@ -87,8 +84,6 @@ Module.register("MMM-PublicTransportHafas", {
       direction: this.translate("PTH_TO")
     };
 
-    Log.info(headings);
-
     let noDeparturesMessage = this.translate("PTH_NO_DEPARTURES");
 
     return domBuilder.getDom(this.departures, headings, noDeparturesMessage);
@@ -127,15 +122,12 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   socketNotificationReceived: function (notification, payload) {
-    Log.info(this.config.name + " (main module) received notification: " + notification);
-
     if (!this.isForThisStation(payload)) {
       return;
     }
 
     switch (notification) {
       case "FETCHER_INITIALIZED":
-        this.stationName = payload.stationName;
         this.initialized = true;
         this.startFetchingLoop(this.config.updatesEvery);
 
@@ -147,8 +139,6 @@ Module.register("MMM-PublicTransportHafas", {
         this.departures = payload.departures;
         this.updateDom(2000);
 
-        // TODO: Remove!
-        Log.info(this.departures);
         break;
 
       case "FETCH_ERROR":
@@ -162,6 +152,7 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   isForThisStation: function (payload) {
+    // TODO: Use something else as index to make two module instances with the same stationID possible.
     return payload.stationID === this.config.stationID;
   },
 

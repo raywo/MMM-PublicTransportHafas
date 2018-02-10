@@ -40,7 +40,7 @@ them from the rest of the interface.
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 26ch;
+  max-width: 24ch;
 }
 
 .pthHasDelay {
@@ -62,7 +62,7 @@ them from the rest of the interface.
 .pthMarquee span {
   display: inline-block;
   white-space: nowrap;
-  animation: pthMarquee 2s linear infinite alternate;
+  animation: pthMarquee 3s linear infinite alternate;
 }
 
 @keyframes pthMarquee {
@@ -71,7 +71,7 @@ them from the rest of the interface.
     transform: translate(0%, 0);
   }
   95%, 100% {
-    transform: translate(-20%, 0);
+    transform: translate(-35%, 0);
   }
 }
 
