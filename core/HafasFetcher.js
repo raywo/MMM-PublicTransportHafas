@@ -1,8 +1,8 @@
 "use strict";
 
 const moment = require("moment");
-const createClient = require('hafas-client')
-const profile = require('hafas-client/p/db')
+const createClient = require('hafas-client');
+const profile = require('hafas-client/p/db');
 
 module.exports = class HafasFetcher {
 
@@ -26,11 +26,6 @@ module.exports = class HafasFetcher {
 
   getStationID() {
     return this.config.stationID;
-  }
-
-
-  getStationName() {
-    return this.config.stationName;
   }
 
 
