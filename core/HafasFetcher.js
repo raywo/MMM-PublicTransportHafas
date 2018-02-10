@@ -1,8 +1,10 @@
 "use strict";
 
 const moment = require("moment");
-const createClient = require('hafas-client');
-const profile = require('hafas-client/p/db');
+const createClient = require("hafas-client");
+const profile = require("hafas-client/p/db");
+const arrayDiff = require("arr-diff");
+
 
 module.exports = class HafasFetcher {
 
@@ -21,6 +23,10 @@ module.exports = class HafasFetcher {
   constructor(config) {
     this.config = config;
     this.hafasClient = createClient(profile);
+
+    // types given by the api
+    this.possibleTypes = [ "bus", "ferry", "express", "nationalExp", "regional", "suburban", "tram", "subway" ];
+    this.config.includedTransportationTypes = arrayDiff(this.possibleTypes, this.config.excludedTransportationTypes);
   }
 
 
@@ -36,12 +42,27 @@ module.exports = class HafasFetcher {
       duration: this.config.timeInFuture
     };
 
-    return this.hafasClient.departures(this.config.stationID, options);
+    return this.hafasClient.departures(this.config.stationID, options)
+      .then((departures) => {
+        return this.filterByTransportationTypes(departures);
+      }).catch((e) => {
+        throw e;
+      });
   }
 
 
   getDepartureTime() {
     // TODO: Maybe a few minutes earlier to be able to show unreachable departures.
     return moment().add(this.config.timeToStation, "minutes");
+  }
+
+
+  filterByTransportationTypes(departures) {
+    return departures.filter((departure) => {
+      let product = departure.line.product;
+      let index = this.config.includedTransportationTypes.indexOf(product);
+
+      return index !== -1;
+    });
   }
 };

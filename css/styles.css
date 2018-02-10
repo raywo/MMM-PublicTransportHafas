@@ -8,9 +8,9 @@ them from the rest of the interface.
 }
 
 .pthTable {
-  display: table;
   border-collapse: collapse;
   border-spacing: 1px;
+  display: table;
 }
 
 .pthTable > thead {
@@ -22,9 +22,9 @@ them from the rest of the interface.
 }
 
 .pthRulerCell {
-  line-height: 0;
   border-spacing: 10px;
   border-bottom: 1px dotted #666;
+  line-height: 0;
 }
 
 .pthTextRight {
@@ -37,10 +37,10 @@ them from the rest of the interface.
 }
 
 .pthDirectionCell {
+  max-width: 24ch;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 24ch;
 }
 
 .pthHasDelay {
@@ -52,17 +52,17 @@ them from the rest of the interface.
 }
 
 .pthMarquee {
-  text-align: left;
   box-sizing: border-box;
   margin: 0 auto;
-  white-space: nowrap;
   overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .pthMarquee span {
+  animation: pthMarquee 3s linear infinite alternate;
   display: inline-block;
   white-space: nowrap;
-  animation: pthMarquee 3s linear infinite alternate;
 }
 
 @keyframes pthMarquee {
@@ -77,42 +77,42 @@ them from the rest of the interface.
 
 /* Styles for line symbols. */
 .pthSign {
+  background-color: #333333;
+  color: #666666;
+
   font-size: 0.9em;
   font-weight: bold;
-  text-align: center;
-  position: relative;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
   margin-right: 0.5rem;
   padding-left: 5px;
   padding-right: 5px;
-
-  color: #666666;
-  background-color: #333333
+  position: relative;
+  text-align: center;
 }
 
 .pthBWLineSign {
-  color: #666666;
   background-color: #333333;
+  color: #666666;
 }
 
 /* Standards for Deutsche Bahn products. */
 .pthDbStandard {
+  border-radius: 5px;
   font-size: 0.8em;
   line-height: 1.4em;
-  border-radius: 5px;
 }
 
 .ice, .ic {
-  color: #F01414;
   background-color: white;
   border-bottom: 4px #F01414 solid;
+  color: #F01414;
 }
 
 .rb, .re {
-  color: white;
   background-color: #F01414;
   border: 0.5px white solid;
+  color: white;
 }
 
 .ice:before {
