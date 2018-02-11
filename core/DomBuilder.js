@@ -4,6 +4,12 @@ class DomBuilder {
 
   constructor(config) {
     this.config = config;
+
+    this.headingSymbols = {
+      time: "fa fa-clock-o",
+      line: "fa fa-bus",
+      direction: "fa fa-map-marker"
+    };
   }
 
 
@@ -81,10 +87,9 @@ class DomBuilder {
     let headerRow = document.createElement("tr");
     headerRow.className = "bold dimmed";
 
-    headerRow.appendChild(this.getTableCell(headings.time));
-    headerRow.appendChild(this.getTableCell(headings.delay));
-    headerRow.appendChild(this.getTableCell(headings.line));
-    headerRow.appendChild(this.getTableCell(headings.direction, "pthTextRight"));
+    headerRow.appendChild(this.getHeaderCell(headings.time, this.headingSymbols.time));
+    headerRow.appendChild(this.getHeaderCell(headings.line, this.headingSymbols.line, "pthTextCenter"));
+    headerRow.appendChild(this.getHeaderCell(headings.direction, this.headingSymbols.direction, "pthTextCenter"));
 
     tHead.appendChild(headerRow);
 
@@ -109,6 +114,21 @@ class DomBuilder {
     });
 
     return tBody;
+  }
+
+
+  getHeaderCell(textContent, symbol, cssClass) {
+    let headerContent;
+
+    if (this.config.showTableHeadersAsSymbols) {
+      headerContent = document.createElement("i");
+      headerContent.className = symbol;
+
+    } else {
+      headerContent = textContent;
+    }
+
+    return this.getTableCell(headerContent, cssClass);
   }
 
 
@@ -147,33 +167,46 @@ class DomBuilder {
     let row = document.createElement("tr");
     row.className = "bright";
 
-    row.appendChild(this.getTableCell(time));
-    row.appendChild(this.getDelayCell(delay));
+    row.appendChild(this.getTimeCell(time, delay));
     row.appendChild(this.getLineCell(line));
     row.appendChild(this.getDirectionCell(direction));
 
     return row;
   }
 
-  getDelayCell(delay) {
-    let cell = this.getTableCell(this.getDelay(delay));
-    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
-    cell.className = "pthDelayCell " + cssClass;
+  getTimeCell(time, delay) {
+    let cell = document.createElement("td");
+    cell.appendChild(document.createTextNode(time));
+    cell.appendChild(this.getDelaySpan(delay));
 
     return cell;
   }
 
+
+  getDelaySpan(delay) {
+    let delaySpan = document.createElement("span");
+    delaySpan.innerHTML = this.getDelay(delay);
+
+    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    delaySpan.className = "pthDelay " + cssClass;
+
+    return delaySpan;
+  }
+
+
   getDelay(delay) {
     let sign = delay < 0 ? "-" : "+";
 
-    return sign + delay / 60 + "&nbsp;";
+    return "&nbsp;" + sign + delay / 60 + "&nbsp;";
   }
+
 
   getDepartureTime(when, delay) {
     let time = moment(when).subtract(delay, "seconds");
 
     return time.format("LT");
   }
+
 
   getLineCell(lineName) {
     let line;
@@ -186,10 +219,11 @@ class DomBuilder {
 
     let lineDiv = document.createElement("div");
     lineDiv.innerHTML = line;
-    lineDiv.className = this.getLineCssClass(lineName);
+    lineDiv.className = this.getLineCssClass(lineName) + " pthTextCenter";
 
     return this.getTableCell(lineDiv);
   }
+
 
   getLineCssClass(lineName) {
     if (this.config.showColoredLineSymbols) {
@@ -209,6 +243,7 @@ class DomBuilder {
       return "pthSign pthBWLineSign";
     }
   }
+
 
   getDirectionCell(direction) {
     let truncatePosition = 26;
