@@ -12,6 +12,7 @@ module.exports = class HafasFetcher {
    *
    * @param config The configuration used for this fetcher. It has the following format:
    *        config = {
+   *          identifier: *a string identifying this fetcher, must be unique for all instances of the module*
    *          stationID: *a valid station id*,
    *          timeToStation: *an integer describing how long it takes to get to the station (in minutes)*,
    *          timeInFuture: *an integer describing how far in the future the departure can lie*
@@ -39,6 +40,11 @@ module.exports = class HafasFetcher {
     ];
 
     this.config.includedTransportationTypes = arrayDiff(this.possibleTypes, this.config.excludedTransportationTypes);
+  }
+
+
+  getIdentifier() {
+    return this.config.identifier;
   }
 
 
