@@ -187,7 +187,12 @@ class DomBuilder {
     let delaySpan = document.createElement("span");
     delaySpan.innerHTML = this.getDelay(delay);
 
-    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    let cssClass = "dimmed";
+
+    if (this.config.useColorForRealtimeInfo) {
+      cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    }
+
     delaySpan.className = "pthDelay " + cssClass;
 
     return delaySpan;
