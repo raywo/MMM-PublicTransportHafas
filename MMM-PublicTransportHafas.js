@@ -37,7 +37,7 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   start: function () {
-    Log.info("Starting module: " + this.name);
+    Log.info("Starting module: " + this.name + " with identifier: " + this.identifier);
 
     this.departures = [];
     this.initialized = false;
@@ -54,6 +54,7 @@ Module.register("MMM-PublicTransportHafas", {
     }
 
     let fetcherOptions = {
+      identifier: this.identifier,
       stationID: this.config.stationID,
       timeToStation: this.config.timeToStation,
       timeInFuture: this.config.timeInFuture,
@@ -152,8 +153,7 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   isForThisStation: function (payload) {
-    // TODO: Use something else as index to make two module instances with the same stationID possible.
-    return payload.stationID === this.config.stationID;
+    return payload.identifier === this.identifier;
   },
 
 
@@ -178,11 +178,11 @@ Module.register("MMM-PublicTransportHafas", {
 
   startFetchingLoop: function(interval) {
     // start immediately ...
-    this.sendSocketNotification("FETCH_DEPARTURES", this.config.stationID);
+    this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
 
     // ... and then repeat in the given interval
     setInterval(() => {
-      this.sendSocketNotification("FETCH_DEPARTURES", this.config.stationID);
+      this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
     }, interval * 1000);
   },
 

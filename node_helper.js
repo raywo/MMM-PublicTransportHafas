@@ -27,16 +27,15 @@ module.exports = NodeHelper.create({
   createFetcher: function (config) {
     let fetcher;
 
-    if (typeof this.departuresFetchers[config.stationID] === "undefined") {
+    if (typeof this.departuresFetchers[config.identifier] === "undefined") {
       fetcher = new HafasFetcher(config);
-      // TODO: Use something else as index to make two module instances with the same stationID possible.
-      this.departuresFetchers[config.stationID] = fetcher;
+      this.departuresFetchers[config.identifier] = fetcher;
       console.log("Transportation fetcher for station with id '" + fetcher.getStationID() + "' created.");
 
       this.sendFetcherLoaded(fetcher);
 
     } else {
-      fetcher = this.departuresFetchers[config.stationID];
+      fetcher = this.departuresFetchers[config.identifier];
       console.log("Using existing transportation fetcher for station id '" + fetcher.getStationID() + "'.");
 
       this.sendFetcherLoaded(fetcher);
@@ -46,25 +45,24 @@ module.exports = NodeHelper.create({
 
   sendFetcherLoaded: function (fetcher) {
     this.sendSocketNotification("FETCHER_INITIALIZED", {
-      // TODO: Use something else as index to make two module instances with the same stationID possible.
-      stationID: fetcher.getStationID()
+      identifier: fetcher.getIdentifier()
     });
   },
 
 
-  fetchDepartures(stationID) {
-    let fetcher = this.departuresFetchers[stationID];
+  fetchDepartures(identifier) {
+    let fetcher = this.departuresFetchers[identifier];
 
     fetcher.fetchDepartures().then((fetchedDepartures) => {
       let payload = {
-        stationID: fetcher.getStationID(),
+        identifier: fetcher.getIdentifier(),
         departures: fetchedDepartures
       };
 
       this.sendSocketNotification("DEPARTURES_FETCHED", payload);
     }).catch((error) => {
       let payload = {
-        stationID: fetcher.getStationID(),
+        identifier: fetcher.getIdentifier(),
         error: error
       };
 
