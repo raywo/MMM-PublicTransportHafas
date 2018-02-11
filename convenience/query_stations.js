@@ -1,15 +1,29 @@
 "use strict";
 
-const createClient = require('hafas-client');
-const dbProfile = require('hafas-client/p/db');
-const client = createClient(dbProfile);
+const createClient = require("hafas-client");
+const dbProfile = require("hafas-client/p/db");
+const readline = require("readline");
+const arrayUnique = require("array-unique");
 
-const readline = require('readline');
+const client = createClient(dbProfile);
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+
+const productMap = {
+  bus: "Bus",
+  ferry: "Fähre",
+  national: "Fernverkehr",
+  nationalExp: "Fernverkehr",
+  regional: "Regionalverkehr",
+  suburban: "S-Bahn",
+  subway: "U-Bahn",
+  taxi: "Taxi",
+  tram: "Tram"
+};
+
 
 rl.question("Geben Sie eine Adresse oder einen Stationsnamen ein: ", (answer) => {
   rl.close();
@@ -22,7 +36,7 @@ rl.question("Geben Sie eine Adresse oder einen Stationsnamen ein: ", (answer) =>
   client.locations(answer, opt).then((response) => {
     console.log("\nGefundene Haltestellen für \"" + answer + "\":\n");
 
-    response.map((element) => {
+    response.forEach((element) => {
       printStationInfo(element);
     });
 
@@ -49,39 +63,8 @@ function refineProducts(products) {
     return result + "keine";
   }
 
-  let productNames = [];
+  let availableProducts = Object.keys(products).filter(key => products[key]);
+  let availableProductsReadable = arrayUnique(availableProducts.map(product => productMap[product]));
 
-  if (products.national || products.nationalExp) {
-    productNames.push("Fernverkehr");
-  }
-
-  if (products.regional) {
-    productNames.push("Regionalverkehr");
-  }
-
-  if (products.suburban) {
-    productNames.push("S-Bahn");
-  }
-
-  if (products.bus) {
-    productNames.push("Bus");
-  }
-
-  if (products.subway) {
-    productNames.push("U-Bahn");
-  }
-
-  if (products.tram) {
-    productNames.push("Tram");
-  }
-
-  if (products.ferry) {
-    productNames.push("Fähre");
-  }
-
-  if (products.taxi) {
-    productNames.push("Taxi");
-  }
-
-  return result + productNames.join(", ");
+  return result + availableProductsReadable.join(", ");
 }
