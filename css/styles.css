@@ -22,8 +22,8 @@ them from the rest of the interface.
 }
 
 .pthRulerCell {
-  border-spacing: 10px;
   border-bottom: 1px dotted #666;
+  border-spacing: 10px;
   line-height: 0;
 }
 
@@ -82,9 +82,9 @@ them from the rest of the interface.
 
   font-size: 0.9em;
   font-weight: bold;
-  margin-top: 0.1rem;
   margin-bottom: 0.1rem;
   margin-right: 0.5rem;
+  margin-top: 0.1rem;
   padding-left: 5px;
   padding-right: 5px;
   position: relative;

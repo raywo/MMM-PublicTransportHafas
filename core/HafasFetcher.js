@@ -25,7 +25,19 @@ module.exports = class HafasFetcher {
     this.hafasClient = createClient(profile);
 
     // types given by the api
-    this.possibleTypes = [ "bus", "ferry", "express", "nationalExp", "regional", "suburban", "tram", "subway" ];
+    this.possibleTypes = [
+      "bus",
+      "ferry",
+      "express",
+      "national",
+      "nationalExp",
+      "regional",
+      "suburban",
+      "subway",
+      "tram",
+      "taxi"
+    ];
+
     this.config.includedTransportationTypes = arrayDiff(this.possibleTypes, this.config.excludedTransportationTypes);
   }
 
