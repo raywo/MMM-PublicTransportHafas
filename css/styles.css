@@ -21,6 +21,10 @@ them from the rest of the interface.
   vertical-align: middle;
 }
 
+.pthTimeCell {
+  width: 5%;
+}
+
 .pthRulerCell {
   border-bottom: 1px dotted #666;
   border-spacing: 10px;
@@ -35,17 +39,16 @@ them from the rest of the interface.
   text-align: center;
 }
 
-.pthDelayCell {
-  font-size: 0.8em;
-  font-weight: bolder;
-  width: 4ch;
-}
-
 .pthDirectionCell {
   max-width: 24ch;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.pthDelay {
+  font-size: 0.8em;
+  font-weight: bolder;
 }
 
 .pthHasDelay {

@@ -31,7 +31,7 @@ Module.register("MMM-PublicTransportHafas", {
     fadeUnreachableDepartures: true,
     fadeReachableDepartures: true,
     fadePointForReachableDepartures: 0.25,
-    customLineStyles: "Leipzig",        // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
+    customLineStyles: "leipzig",        // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
     showOnlyLineNumbers: false          // Display only the line number instead of the complete name, i. e. "11" instead of "STR 11"
   },
 
@@ -80,7 +80,6 @@ Module.register("MMM-PublicTransportHafas", {
 
     let headings = {
       time: this.translate("PTH_DEPARTURE_TIME"),
-      delay: "&nbsp;",
       line: this.translate("PTH_LINE"),
       direction: this.translate("PTH_TO")
     };

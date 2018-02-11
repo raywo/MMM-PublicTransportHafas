@@ -7,7 +7,6 @@ class DomBuilder {
 
     this.headingSymbols = {
       time: "fa fa-clock-o",
-      delay: "",
       line: "fa fa-bus",
       direction: "fa fa-map-marker"
     };
@@ -89,7 +88,6 @@ class DomBuilder {
     headerRow.className = "bold dimmed";
 
     headerRow.appendChild(this.getHeaderCell(headings.time, this.headingSymbols.time));
-    headerRow.appendChild(this.getHeaderCell(headings.delay, this.headingSymbols.delay));
     headerRow.appendChild(this.getHeaderCell(headings.line, this.headingSymbols.line, "pthTextCenter"));
     headerRow.appendChild(this.getHeaderCell(headings.direction, this.headingSymbols.direction, "pthTextCenter"));
 
@@ -169,33 +167,46 @@ class DomBuilder {
     let row = document.createElement("tr");
     row.className = "bright";
 
-    row.appendChild(this.getTableCell(time));
-    row.appendChild(this.getDelayCell(delay));
+    row.appendChild(this.getTimeCell(time, delay));
     row.appendChild(this.getLineCell(line));
     row.appendChild(this.getDirectionCell(direction));
 
     return row;
   }
 
-  getDelayCell(delay) {
-    let cell = this.getTableCell(this.getDelay(delay));
-    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
-    cell.className = "pthDelayCell " + cssClass;
+  getTimeCell(time, delay) {
+    let cell = document.createElement("td");
+    cell.appendChild(document.createTextNode(time));
+    cell.appendChild(this.getDelaySpan(delay));
 
     return cell;
   }
 
+
+  getDelaySpan(delay) {
+    let delaySpan = document.createElement("span");
+    delaySpan.innerHTML = this.getDelay(delay);
+
+    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    delaySpan.className = "pthDelay " + cssClass;
+
+    return delaySpan;
+  }
+
+
   getDelay(delay) {
     let sign = delay < 0 ? "-" : "+";
 
-    return sign + delay / 60 + "&nbsp;";
+    return "&nbsp;" + sign + delay / 60 + "&nbsp;";
   }
+
 
   getDepartureTime(when, delay) {
     let time = moment(when).subtract(delay, "seconds");
 
     return time.format("LT");
   }
+
 
   getLineCell(lineName) {
     let line;
@@ -212,6 +223,7 @@ class DomBuilder {
 
     return this.getTableCell(lineDiv);
   }
+
 
   getLineCssClass(lineName) {
     if (this.config.showColoredLineSymbols) {
@@ -231,6 +243,7 @@ class DomBuilder {
       return "pthSign pthBWLineSign";
     }
   }
+
 
   getDirectionCell(direction) {
     let truncatePosition = 26;
