@@ -26,7 +26,7 @@ Module.register("MMM-PublicTransportHafas", {
     useColorForRealtimeInfo: true,      // Want colored real time information (timeToStation, early)?
     showTableHeaders: true,             // Show table headers?
     showTableHeadersAsSymbols: true,    // Table Headers as symbols or written?
-    maxUnreachableDepartures: 3,        // How many unreachable departures should be shown?
+    maxUnreachableDepartures: 0,        // How many unreachable departures should be shown?
     maxReachableDepartures: 7,          // How many reachable departures should be shown?
     fadeUnreachableDepartures: true,
     fadeReachableDepartures: true,
@@ -60,7 +60,9 @@ Module.register("MMM-PublicTransportHafas", {
       timeInFuture: this.config.timeInFuture,
       direction: this.config.direction,
       ignoredLines: this.config.ignoredLines,
-      excludedTransportationTypes: this.config.excludedTransportationTypes
+      excludedTransportationTypes: this.config.excludedTransportationTypes,
+      maxReachableDepartures: this.config.maxReachableDepartures,
+      maxUnreachableDepartures: this.config.maxUnreachableDepartures
     };
 
     this.sendSocketNotification("CREATE_FETCHER", fetcherOptions);

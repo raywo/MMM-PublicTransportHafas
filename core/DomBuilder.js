@@ -97,27 +97,7 @@ class DomBuilder {
   }
 
 
-  getDeparturesTableBody(departures, noDepartureMessage) {
-    let tBody = document.createElement("tbody");
-    tBody.className = "light";
-
-    if (departures.length === 0) {
-      let row = this.getDeparturesTableNoDeparturesRow(noDepartureMessage);
-      tBody.appendChild(row);
-
-      return tBody;
-    }
-
-    departures.forEach((departure, index) => {
-      let row = this.getDeparturesTableRow(departure, index, departures.length);
-      tBody.appendChild(row);
-    });
-
-    return tBody;
-  }
-
-
-  getHeaderCell(textContent, symbol, cssClass) {
+  getHeaderCell(textContent, symbol, cssClass = "") {
     let headerContent;
 
     if (this.config.showTableHeadersAsSymbols) {
@@ -129,6 +109,35 @@ class DomBuilder {
     }
 
     return this.getTableCell(headerContent, cssClass);
+  }
+
+
+  getDeparturesTableBody(departures, noDepartureMessage) {
+    let tBody = document.createElement("tbody");
+    tBody.className = "light";
+
+    if (departures.length === 0) {
+      let row = this.getDeparturesTableNoDeparturesRow(noDepartureMessage);
+      tBody.appendChild(row);
+
+      return tBody;
+    }
+
+    let reachableCount = departures.length;
+    let unreachableCount = departures.filter(departure => !departure.isReachable).length;
+
+    departures.forEach((departure, index) => {
+      let row = this.getDeparturesTableRow(departure, index, reachableCount, unreachableCount);
+      tBody.appendChild(row);
+
+      let nextDeparture = departures[index + 1];
+
+      if (!departure.isReachable && nextDeparture.isReachable) {
+        tBody.appendChild(this.getRulerRow());
+      }
+    });
+
+    return tBody;
   }
 
 
@@ -145,12 +154,13 @@ class DomBuilder {
     return cell;
   }
 
+
   getDeparturesTableNoDeparturesRow(noDepartureMessage) {
     let row = document.createElement("tr");
     row.className = "dimmed";
 
     let cell = document.createElement("td");
-    cell.colSpan = 4;
+    cell.colSpan = 3;
     cell.innerHTML = noDepartureMessage;
 
     row.appendChild(cell);
@@ -158,7 +168,7 @@ class DomBuilder {
     return row;
   }
 
-  getDeparturesTableRow(departure, index, departuresCount) {
+  getDeparturesTableRow(departure, index, departuresCount, unreachableCount) {
     let time = this.getDepartureTime(departure.when, departure.delay);
     let delay = departure.delay;
     let line = departure.line.name;
@@ -166,7 +176,12 @@ class DomBuilder {
 
     let row = document.createElement("tr");
     row.className = "bright";
-    row.style.opacity = this.getRowOpacity(index, departuresCount);
+
+    if (departure.isReachable) {
+      row.style.opacity = this.getRowOpacity(index - unreachableCount, departuresCount);
+    } else {
+      row.style.opacity = this.getUnreachableRowOpacity(index, unreachableCount);
+    }
 
     row.appendChild(this.getTimeCell(time, delay));
     row.appendChild(this.getLineCell(line));
@@ -284,5 +299,34 @@ class DomBuilder {
     }
 
     return opacity;
+  }
+
+
+  getUnreachableRowOpacity(index, count) {
+    if (!this.config.fadeUnreachableDepartures) {
+      return 1.0;
+    }
+
+    let startOpacity = 0.3;
+    let endOpacity = 0.6;
+    let opacityDiff = (endOpacity - startOpacity) / count;
+
+    if (index + 1 === count) {
+      return endOpacity;
+    } else {
+      return startOpacity + opacityDiff * index;
+    }
+  }
+
+
+  getRulerRow() {
+    let row = document.createElement("tr");
+    let cell = document.createElement("td");
+
+    cell.colSpan = 3;
+    cell.className = "pthRulerCell";
+    row.appendChild(cell);
+
+    return row;
   }
 }

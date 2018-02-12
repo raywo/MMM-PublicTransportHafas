@@ -18,10 +18,13 @@ module.exports = class HafasFetcher {
    *          timeInFuture: *an integer describing how far in the future the departure can lie*
    *          direction: *an array of station ids*,
    *          ignoredLines: *an array of line names which are to be ignored*,
-   *          excludedTransportationTypes: *an array of product names which are not to be shown*
+   *          excludedTransportationTypes: *an array of product names which are not to be shown*,
+   *          maxReachableDepartures: *an integer describing how many departures should be fetched*,
+   *          maxUnreachableDepartures: *an integer describing how many unreachable departures should be fetched*
    *        }
    */
   constructor(config) {
+    this.leadTime = 40; // minutes
     this.config = config;
     this.hafasClient = createClient(profile);
 
@@ -62,7 +65,13 @@ module.exports = class HafasFetcher {
 
     return this.hafasClient.departures(this.config.stationID, options)
       .then((departures) => {
-        return this.filterByTransportationTypes(departures);
+        let maxElements = this.config.maxReachableDepartures + this.config.maxUnreachableDepartures;
+        let filteredDepartures = this.filterByTransportationTypes(departures);
+        filteredDepartures = this.departuresMarkedWithReachability(filteredDepartures);
+        filteredDepartures = this.departuresRemovedSurplusUnreachableDepartures(filteredDepartures);
+        filteredDepartures = filteredDepartures.slice(0, maxElements);
+
+        return filteredDepartures;
       }).catch((e) => {
         throw e;
       });
@@ -70,7 +79,17 @@ module.exports = class HafasFetcher {
 
 
   getDepartureTime() {
-    // TODO: Maybe a few minutes earlier to be able to show unreachable departures.
+    let departureTime = this.getReachableTime();
+
+    if (this.config.maxUnreachableDepartures > 0) {
+      departureTime = moment(departureTime).subtract(this.leadTime, "minutes");
+    }
+
+    return departureTime;
+  }
+
+
+  getReachableTime() {
     return moment().add(this.config.timeToStation, "minutes");
   }
 
@@ -82,5 +101,34 @@ module.exports = class HafasFetcher {
 
       return index !== -1;
     });
+  }
+
+
+  departuresMarkedWithReachability(departures) {
+    return departures.map((departure) => {
+      departure.isReachable = this.isReachable(departure);
+      return departure;
+    });
+  }
+
+
+  departuresRemovedSurplusUnreachableDepartures(departures) {
+    let unreachableDeparturesCount = departures.filter(departure => !departure.isReachable).length;
+    let result = departures;
+
+    if (unreachableDeparturesCount > this.config.maxUnreachableDepartures) {
+      let toBeRemoved = unreachableDeparturesCount - this.config.maxUnreachableDepartures;
+
+      for (let i = 0; i < toBeRemoved; i++) {
+        result.shift();
+      }
+    }
+
+    return result;
+  }
+
+
+  isReachable(departure) {
+    return moment(departure.when).isSameOrAfter(moment(this.getReachableTime()));
   }
 };
