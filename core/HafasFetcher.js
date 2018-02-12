@@ -18,7 +18,8 @@ module.exports = class HafasFetcher {
    *          timeInFuture: *an integer describing how far in the future the departure can lie*
    *          direction: *an array of station ids*,
    *          ignoredLines: *an array of line names which are to be ignored*,
-   *          excludedTransportationTypes: *an array of product names which are not to be shown*
+   *          excludedTransportationTypes: *an array of product names which are not to be shown*,
+   *          maxReachableDepartures: *an integer describing how many departures should be fetched*
    *        }
    */
   constructor(config) {
@@ -62,7 +63,10 @@ module.exports = class HafasFetcher {
 
     return this.hafasClient.departures(this.config.stationID, options)
       .then((departures) => {
-        return this.filterByTransportationTypes(departures);
+        let filteredDepartures = departures.slice(0, this.config.maxReachableDepartures);
+        filteredDepartures = this.filterByTransportationTypes(filteredDepartures);
+
+        return filteredDepartures;
       }).catch((e) => {
         throw e;
       });

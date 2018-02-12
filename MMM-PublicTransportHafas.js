@@ -60,7 +60,8 @@ Module.register("MMM-PublicTransportHafas", {
       timeInFuture: this.config.timeInFuture,
       direction: this.config.direction,
       ignoredLines: this.config.ignoredLines,
-      excludedTransportationTypes: this.config.excludedTransportationTypes
+      excludedTransportationTypes: this.config.excludedTransportationTypes,
+      maxReachableDepartures: this.config.maxReachableDepartures
     };
 
     this.sendSocketNotification("CREATE_FETCHER", fetcherOptions);
