@@ -31,6 +31,12 @@ them from the rest of the interface.
   line-height: 0;
 }
 
+.pthRulerCell {
+  border-bottom: 1px dotted #666;
+  border-spacing: 10px;
+  line-height: 0;
+}
+
 .pthTextRight {
   text-align: right;
 }
