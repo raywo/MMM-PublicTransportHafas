@@ -99,28 +99,16 @@ class DomBuilder {
 
 
   getHeaderCell(textContent, symbol, cssClass = "") {
-    let headerContent;
-
-    if (this.config.showTableHeadersAsSymbols) {
-      headerContent = document.createElement("i");
-      headerContent.className = symbol;
-
-    } else {
-      headerContent = textContent;
-    }
-
-    return this.getTableCell(headerContent, cssClass);
-  }
-
-
-  getTableCell(content, cssClass = "") {
     let cell = document.createElement("td");
     cell.className = cssClass;
 
-    if (typeof content === "string") {
-      cell.innerHTML = content;
-    } else {
+    if (this.config.showTableHeadersAsSymbols) {
+      let content = document.createElement("i");
+      content.className = symbol;
       cell.appendChild(content);
+
+    } else {
+      cell.innerHTML = textContent;
     }
 
     return cell;
