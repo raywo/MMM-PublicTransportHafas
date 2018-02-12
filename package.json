@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/raywo/MMM-PublicTransportHafas",
   "engines": {
-    "node": ">=6"
+    "node": ">=7"
   },
   "dependencies": {
     "lodash.isobject": "^3.0.2",
