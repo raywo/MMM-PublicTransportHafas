@@ -108,8 +108,8 @@ class DomBuilder {
       return tBody;
     }
 
-    departures.forEach((departure) => {
-      let row = this.getDeparturesTableRow(departure);
+    departures.forEach((departure, index) => {
+      let row = this.getDeparturesTableRow(departure, index, departures.length);
       tBody.appendChild(row);
     });
 
@@ -158,7 +158,7 @@ class DomBuilder {
     return row;
   }
 
-  getDeparturesTableRow(departure) {
+  getDeparturesTableRow(departure, index, departuresCount) {
     let time = this.getDepartureTime(departure.when, departure.delay);
     let delay = departure.delay;
     let line = departure.line.name;
@@ -166,6 +166,7 @@ class DomBuilder {
 
     let row = document.createElement("tr");
     row.className = "bright";
+    row.style.opacity = this.getRowOpacity(index, departuresCount);
 
     row.appendChild(this.getTimeCell(time, delay));
     row.appendChild(this.getLineCell(line));
@@ -187,7 +188,12 @@ class DomBuilder {
     let delaySpan = document.createElement("span");
     delaySpan.innerHTML = this.getDelay(delay);
 
-    let cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    let cssClass = "dimmed";
+
+    if (this.config.useColorForRealtimeInfo) {
+      cssClass = delay > 0 ? "pthHasDelay" : "pthIsTooEarly";
+    }
+
     delaySpan.className = "pthDelay " + cssClass;
 
     return delaySpan;
@@ -257,5 +263,26 @@ class DomBuilder {
     }
 
     return this.getTableCell(content, className);
+  }
+
+
+  getRowOpacity(index, departuresCount) {
+    if (!this.config.fadeReachableDepartures) {
+      return 1.0;
+    }
+
+    let threshold = departuresCount * this.config.fadePointForReachableDepartures;
+    let opacity = 1;
+    let startOpacity = 0.8;
+    let endOpacity = 0.2;
+    let opacityDiff = (startOpacity - endOpacity) / (departuresCount - threshold);
+
+    if (index > threshold) {
+      let fadingIndex = index - threshold;
+      let currentOpacity = fadingIndex * opacityDiff;
+      opacity = startOpacity - currentOpacity;
+    }
+
+    return opacity;
   }
 }
