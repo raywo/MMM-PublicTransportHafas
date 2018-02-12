@@ -110,7 +110,8 @@ Module.register("MMM-PublicTransportHafas", {
   getScripts: function () {
     return [
       "moment.js",
-      this.file("core/DomBuilder.js")
+      this.file("core/DomBuilder.js"),
+      this.file("core/TableBodyBuilder.js")
     ];
   },
 
