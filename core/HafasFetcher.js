@@ -67,6 +67,7 @@ module.exports = class HafasFetcher {
       .then((departures) => {
         let maxElements = this.config.maxReachableDepartures + this.config.maxUnreachableDepartures;
         let filteredDepartures = this.filterByTransportationTypes(departures);
+        filteredDepartures = this.filterByIgnoredLines(filteredDepartures);
         filteredDepartures = this.departuresMarkedWithReachability(filteredDepartures);
         filteredDepartures = this.departuresRemovedSurplusUnreachableDepartures(filteredDepartures);
         filteredDepartures = filteredDepartures.slice(0, maxElements);
@@ -100,6 +101,16 @@ module.exports = class HafasFetcher {
       let index = this.config.includedTransportationTypes.indexOf(product);
 
       return index !== -1;
+    });
+  }
+
+
+  filterByIgnoredLines(departures) {
+    return departures.filter((departure) => {
+      let line = departure.line.name;
+      let index = this.config.ignoredLines.indexOf(line);
+
+      return index === -1;
     });
   }
 
