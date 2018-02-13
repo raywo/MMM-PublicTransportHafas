@@ -21,7 +21,7 @@ For more information see the [Configuration](#configuration) section.
 
 |![Example: Goerdelerring Leipzig, all directions](img/Goerdelerring_all.png)<br>*Leipzig, Goerdelerring (all directions)*|![Example: Goerdelerring Leipzig, heading to main station](img/Goerdelerring_to_hbf.png)<br>*Leipzig, Goerdelerring (heading to main station)*|
 |---|---|
-|![Example: Hauptbahnhof, Leipzig, only tram](img/Hauptbahnhof_tram_only.png)<br>*Hauptbahnhof, Leipzig (displaying only trams and two unreachable departures*|![Example: Hauptbahnhof, Leipzig, only regional and national trains](img/Hauptbahnhof_train_only.png)<br>*Hauptbahnhof, Leipzig (displaying only regional and national trains)*|
+|![Example: Hauptbahnhof, Leipzig, only tram](img/Hauptbahnhof_tram_only.png)<br>*Hauptbahnhof, Leipzig (displaying only trams and two unreachable departures)*|![Example: Hauptbahnhof, Leipzig, only regional and national trains](img/Hauptbahnhof_train_only.png)<br>*Hauptbahnhof, Leipzig (displaying only regional and national trains)*|
 
 
 ## Preconditions
@@ -96,29 +96,27 @@ The module is quite configurable. These are the possible options:
 | Option | Description |
 |--------|-------------|
 | `stationID`                       | <p>The ID you want to display departures for.</p><p>**Type:** `string` **REQUIRED**<br>**Default Value:** none</p><p>**Note:** How to get the ID is described [here](#how-to-get-the-stationID)</p>|
-| `stationName`                     |<p></p>
-<p>**Type:** <br>**Example:** <br>**Default Value:** </p>
-<p>**Note:** </p>|
-| `headerPrefix`                    |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `headerAppendix`                  |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `updatesEvery`                    |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `direction`                       |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `ignoredLines`                    |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `excludedTransportationTypes`     |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `timeToStation`                   |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `timeInFuture`                    |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `marqueeLongDirections`           |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `showColoredLineSymbols`          |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `useColorForRealtimeInfo`         |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `showTableHeaders`                |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `showTableHeadersAsSymbols`       |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `maxUnreachableDepartures`        |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `maxReachableDepartures`          |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `fadeUnreachableDepartures`       |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `fadeReachableDepartures`         |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `fadePointForReachableDepartures` |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `customLineStyles`                |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `showOnlyLineNumbers`             |<p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `stationName`                     | <p>The name of the station as it should appear on the display.</p><p>**Type:** `string` **OPTIONAL**<br>**Example:** `"Wilhelm-Leuschner-Platz"`<br>**Default Value:** none</p><p>**Note:** If you leave this setting, `headerPrefix` and `headerAppendix` blank the module will show an empty header.</p>|
+| `headerPrefix`                    | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"von"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerPrefix` and `stationName` is automatically inserted.</p>|
+| `headerAppendix`                  | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"(Richtung HBF)"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerAppendix` and `stationName` is automatically inserted.</p>|
+| `updatesEvery`                    | <p>The time in seconds when the displayed departures should be updated.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60` (The departures will be refreshed every minute.)<br>**Default Value:** `120`</p><p>**Note:** The minimal refresh time is 30 seconds.</p>|
+| `direction`                       | <p>An ID of a station </p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `ignoredLines`                    | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `excludedTransportationTypes`     | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `timeToStation`                   | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `timeInFuture`                    | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `marqueeLongDirections`           | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `showColoredLineSymbols`          | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `useColorForRealtimeInfo`         | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `showTableHeaders`                | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `showTableHeadersAsSymbols`       | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `maxUnreachableDepartures`        | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `maxReachableDepartures`          | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `fadeUnreachableDepartures`       | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `fadeReachableDepartures`         | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `fadePointForReachableDepartures` | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `customLineStyles`                | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `showOnlyLineNumbers`             | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
 
 
 
