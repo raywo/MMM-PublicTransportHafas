@@ -88,6 +88,7 @@ class TableBodyBuilder {
     let cell = document.createElement("td");
     cell.appendChild(document.createTextNode(time));
     cell.appendChild(this.getDelaySpan(delay));
+    cell.className = "pthTimeCell";
 
     return cell;
   }
