@@ -35,7 +35,7 @@ For more information see the [Configuration](#configuration) section.
 
 Just clone the module into your MagicMirror modules folder and execute `npm install` in the module’s directory:
 
-```
+```bash
 git clone https://github.com/raywo/MMM-PublicTransportHafas.git
 cd MMM-PublicTransportHafas
 npm install
@@ -46,7 +46,7 @@ npm install
 
 Go to the module’s folder inside MagicMirror modules folder and pull the latest version from GitHub and install:
 
-```
+```bash
 git pull
 npm install
 ```
@@ -60,7 +60,7 @@ Running the script:
 
 change to `MagicMirror/modules/MMM-PublicTransportHafas`
 
-``` 
+```bash 
 node ./convenience/query_station.js 
 ```
 
@@ -95,16 +95,16 @@ The module is quite configurable. These are the possible options:
 
 | Option | Description |
 |--------|-------------|
-| `stationID`                       | <p>The ID you want to display departures for.</p><p>**Type:** `string` **REQUIRED**<br>**Default Value:** none</p><p>**Note:** How to get the ID is described [here](#how-to-get-the-stationID)</p>|
+| `stationID`                       | <p>The ID you want to display departures for.</p><p>**Type:** `string` **REQUIRED**<br>**Example:** `"008012202"`<br>**Default Value:** none</p><p>**Note:** How to get the ID is described [here](#how-to-get-the-stationID)</p>|
 | `stationName`                     | <p>The name of the station as it should appear on the display.</p><p>**Type:** `string` **OPTIONAL**<br>**Example:** `"Wilhelm-Leuschner-Platz"`<br>**Default Value:** none</p><p>**Note:** If you leave this setting, `headerPrefix` and `headerAppendix` blank the module will show an empty header.</p>|
 | `headerPrefix`                    | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"von"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerPrefix` and `stationName` is automatically inserted.</p>|
 | `headerAppendix`                  | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"(Richtung HBF)"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerAppendix` and `stationName` is automatically inserted.</p>|
 | `updatesEvery`                    | <p>The time in seconds when the displayed departures should be updated.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60` (The departures will be refreshed every minute.)<br>**Default Value:** `120`</p><p>**Note:** The minimal refresh time is 30 seconds.</p>|
-| `direction`                       | <p>An ID of a station </p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `ignoredLines`                    | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `excludedTransportationTypes`     | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `timeToStation`                   | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
-| `timeInFuture`                    | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
+| `direction`                       | <p>An ID of a station. It is used to display only those departures heading to this station. </p><p>**Type:** `string` **OPTIONAL**<br>**Example:** `"000954609"`<br>**Default Value:** `""`</p><p>**Note:** It is not neccessary to find the ID of the end station. Just use the next station which is on the route you are after.<br>It is not possible to list multiple IDs. If you want to display different directions for one station use multiple instances of this module.</p>|
+| `ignoredLines`                    | <p>An array of strings describing the lines you want to exclude from the displayed departures.</p><p>**Type:** `array` **OPTIONAL** <br>**Example:** `[ "STR 11", "STR 10" ]` (Displays all lines except tram 10 and 11.)<br>**Default Value:** `[]`</p><p>**Note:** You need to provide the line name exactly as they are otherwise displayed. This setting is case sensitive. Blanks need to be exactly as they are display. If a line is usually displayes as `BUS  89` (two blanks) you need to type exactly that into the array with two blanks. </p>|
+| `excludedTransportationTypes`     | <p>An array of strings describing the transportation types you want to exclude from the displayed departures.</p><p>**Type:** `array` **OPTIONAL** <br>**Example:** `[ "suburban", "bus" ]`<br>**Default Value:** `[]`</p><p>**Note:** Possible values are: <table><tr><th>Type</th><th>Use in Germany</th></tr><tr><td>`"bus"`</td><td>bus</td></tr><tr><td>`"ferry"`</td><td>F&auml;hre</td></tr><tr><td>`"express"`</td><td>?</td></tr><tr><td>`"national"`</td><td>IC trains</td></tr><tr><td>`"nationalExp"`</td><td>ICE trains</td></tr><tr><td>`"regional"`</td><td>RB or RE</td></tr><tr><td>`"suburban"`</td><td>S-Bahn</td></tr><tr><td>`"subway"`</td><td>U-Bahn</td></tr><tr><td>`"tram"`</td><td>Tram</td></tr><tr><td>`"taxi"`</td><td>Taxi</td></tr></table></p>|
+| `timeToStation`                   | <p>An integer indicating how long it takes you to get to the station.</p><p>**Type:** `integer` **OPTIONAL**<br>**Example:** `5`<br>**Default Value:** `10` </p><p>**Note:** The time is given in minutes.</p>|
+| `timeInFuture`                    | <p>An integer indication how far in the future a departure can be.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60`<br>**Default Value:** `10`</p><p>**Note:** The time is given in minutes.<br>Use this setting on stations where there is a big time gap between departures. This way you will see more than one or two departures.</p>|
 | `marqueeLongDirections`           | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
 | `showColoredLineSymbols`          | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
 | `useColorForRealtimeInfo`         | <p></p><p>**Type:** <br>**Example:** <br>**Default Value:** </p><p>**Note:** </p>|
@@ -122,34 +122,30 @@ The module is quite configurable. These are the possible options:
 
 Here is an example for an entry in `config.js`
 
-```
+```javascript
 {
-  stationID: "008012202",
-  stationName: "Wilhelm-Leuschner-Platz"
-  headerPrefix: "",
-  headerAppendix: "",
-  updatesEvery: 120,                  // How often should the table be updated in s?
+  stationID: "008012202",                   // Replace with your stationID!
+  stationName: "Wilhelm-Leuschner-Platz"    // Replace with your station name!
+  
+  direction: "",                    // Show only departures heading to this station. (A station ID.)
+  ignoredLines: [],                 // Which lines should be ignored? (comma-separated list of line names)
+  excludedTransportationTypes: [],  // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
+  timeToStation: 10,                // How long do you need to walk to the next Station?
+  timeInFuture: 10,                 // Show departures for the next *timeInFuture* minutes.
 
-  direction: "",                      // Show only departures heading to this station. (A station ID.)
-  ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
-  excludedTransportationTypes: [],    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
-  timeToStation: 10,                  // How long do you need to walk to the next Station?
-  timeInFuture: 10,                   // Show departures for the next *timeInFuture* minutes.
-
-  marqueeLongDirections: true,        // Use Marquee effect for long station names?
-  showColoredLineSymbols: true,       // Want colored line symbols?
-  useColorForRealtimeInfo: true,      // Want colored real time information (timeToStation, early)?
-  showTableHeaders: true,             // Show table headers?
-  showTableHeadersAsSymbols: true,    // Table Headers as symbols or written?
-  maxUnreachableDepartures: 0,        // How many unreachable departures should be shown?
-  maxReachableDepartures: 7,          // How many reachable departures should be shown?
-  fadeUnreachableDepartures: true,
-  fadeReachableDepartures: true,
-  fadePointForReachableDepartures: 0.25,
-  customLineStyles: "leipzig",        // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
-  showOnlyLineNumbers: false          // Display only the line number instead of the complete name, i. e. "11" instead of "STR 11"
+  showColoredLineSymbols: true,     // Want colored line symbols?
+  useColorForRealtimeInfo: true,    // Want colored real time information (timeToStation, early)?
+  showTableHeadersAsSymbols: true,  // Table Headers as symbols or text?
+  maxUnreachableDepartures: 0,      // How many unreachable departures should be shown?
+  maxReachableDepartures: 7,        // How many reachable departures should be shown?
+  customLineStyles: "leipzig",      // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
+  showOnlyLineNumbers: false        // Display only the line number instead of the complete name, i. e. "11" instead of "STR 11"
 },  
 ```
 
+
+## Notes
+
+It is possible to use multiple instances of this module even using the same `stationID`. So you can display in one instance something like “main station heading eastbound” and in another instance “main station heading westbound”
 
 ## Providing a custom css file
