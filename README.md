@@ -61,13 +61,13 @@ npm install
 
 ## How to get the `stationID`
 
-For your convenience a script to query the hafas system for a `stationID` is included. The script is located in the `convenience` folder inside the module’s folder. Run the script and enter the station name. It is useful to enter a city name too since the system knows a lot of stations even outside Germany. 
+For your convenience a script to query the hafas system for a `stationID` is included. The script is located in the `convenience` folder inside the module’s folder. Run the script and enter the station name. It is useful to enter a city name too since the system knows a lot of stations even outside Germany.
 
 Running the script:
 
 change to `MagicMirror/modules/MMM-PublicTransportHafas` then start the script by typing
 
-```bash 
+```bash
 node ./convenience/query_station.js 
 ```
 
@@ -152,7 +152,7 @@ Here is an example for an entry in `config.js`
     customLineStyles: "leipzig",      // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
     showOnlyLineNumbers: false        // Display only the line number instead of the complete name, i. e. "11" instead of "STR 11"
   }
-},  
+},
 ```
 
 
