@@ -179,7 +179,7 @@ Basically you can set whatever you want in the css file but it is recommended to
 
 #### Example:
 
-In Leipzig the tram lines 2, 8 and 9 use a yellow color. Since the lines share the same settings the css class names are listed with commas so that the setting apply to each listed class.
+In Leipzig the tram lines 2, 8 and 9 use a yellow color. Since the lines share the same settings the css class names are listed with commas so that the settings apply to each listed class.
 
 ```css
 .str2, .str8, .str9 {
@@ -189,7 +189,7 @@ In Leipzig the tram lines 2, 8 and 9 use a yellow color. Since the lines share t
 }
 ```
 
-Some night buses in Leipzig use a orange-ish color. All bus symbols are circles in Leipzig.
+Some night buses in Leipzig use an orange-ish color. All bus symbols are circles in Leipzig.
 
 ```css
 .busn1, .busn1e, .busn5, .busn5e, .busn8, .busn8e {
@@ -202,7 +202,7 @@ Some night buses in Leipzig use a orange-ish color. All bus symbols are circles 
 
 ### Customizing the color for delays
 
-Beside the departure time a small figure displays the delay as reported by the transport provider. 
+Alongside the departure time a small figure displays the delay as reported by the transport provider. 
 
 ![Time with delay](img/time_with_delay.png) ![Time without delay](img/time_without_delay.png)
 
