@@ -1,9 +1,16 @@
 # MMM-PublicTransportHafas
 
-MMM-PublicTransportHafas is a module for the MagicMirror project by Michael Teeuw.
+MMM-PublicTransportHafas is a module for the [MagicMirror](https://github.com/MichMich/MagicMirror) project by [Michael Teeuw](https://github.com/MichMich).
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/2742abc792b88536f6e2/maintainability)](https://codeclimate.com/github/raywo/MMM-PublicTransportHafas/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2742abc792b88536f6e2/maintainability)](https://codeclimate.com/github/raywo/MMM-PublicTransportHafas/maintainability) 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2742abc792b88536f6e2/test_coverage)](https://codeclimate.com/github/raywo/MMM-PublicTransportHafas/test_coverage)
+[![Known Vulnerabilities](https://snyk.io/test/github/raywo/mmm-publictransporthafas/badge.svg?targetFile=package.json)](https://snyk.io/test/github/raywo/mmm-publictransporthafas?targetFile=package.json)
+[![Greenkeeper badge](https://badges.greenkeeper.io/raywo/MMM-PublicTransportHafas.svg)](https://greenkeeper.io/)
+[![dependency status](https://david-dm.org/raywo/MMM-PublicTransportHafas.svg)](https://david-dm.org/raywo/MMM-PublicTransportHafas)
+[![chat on gitter](https://badges.gitter.im/raywo.svg)](https://gitter.im/raywo)
+
+
+
 
 It shows live public transport information in Germany for all stations known to the Deutsche Bahn system. Most public transportation providers in Germany providing information for that system so the coverage should be quite good. The data is provided by the most beautiful [hafas-client](https://github.com/derhuerst/hafas-client) by [Jannis Redmann (derhuerst)](https://github.com/derhuerst). Even in other european contries this module should work as HAFAS is widely used throughout Europe.
 
@@ -58,7 +65,7 @@ For your convenience a script to query the hafas system for a `stationID` is inc
 
 Running the script:
 
-change to `MagicMirror/modules/MMM-PublicTransportHafas`
+change to `MagicMirror/modules/MMM-PublicTransportHafas` then start the script by typing
 
 ```bash 
 node ./convenience/query_station.js 
@@ -95,21 +102,21 @@ The module is quite configurable. These are the possible options:
 
 | Option | Description |
 |--------|-------------|
-| `stationID`                       | <p>The ID you want to display departures for.</p><p>**Type:** `string` **REQUIRED**<br>**Example:** `"008012202"`<br>**Default Value:** none</p><p>**Note:** How to get the ID is described [here](#how-to-get-the-stationID)</p>|
+| `stationID`                       | <p>The ID you want to display departures for.</p><p>**Type:** `string` **REQUIRED**<br>**Example:** `"008012202"`<br>**Default Value:** none</p><p>**Note:** How to get the ID is described [here](#how-to-get-the-stationid).</p>|
 | `stationName`                     | <p>The name of the station as it should appear on the display.</p><p>**Type:** `string` **OPTIONAL**<br>**Example:** `"Wilhelm-Leuschner-Platz"`<br>**Default Value:** none</p><p>**Note:** If you leave this setting, `headerPrefix` and `headerAppendix` blank the module will show an empty header.</p>|
-| `headerPrefix`                    | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"von"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerPrefix` and `stationName` is automatically inserted.</p>|
+| `headerPrefix`                    | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"von"` (Will result in “von Wilhelm-Leuschner-Platz” being displayed.) <br>**Default Value:** `""`</p><p>**Note:** A blank between `headerPrefix` and `stationName` is automatically inserted.</p>|
 | `headerAppendix`                  | <p>The text to be prepended to the `stationName`.</p><p>**Type:** `string` **OPTIONAL** <br>**Example:** `"(Richtung HBF)"`<br>**Default Value:** `""`</p><p>**Note:** A blank between `headerAppendix` and `stationName` is automatically inserted.</p>|
 | `updatesEvery`                    | <p>The time in seconds when the displayed departures should be updated.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60` (The departures will be refreshed every minute.)<br>**Default Value:** `120`</p><p>**Note:** The minimal refresh time is 30 seconds.</p>|
 | `direction`                       | <p>An ID of a station. It is used to display only those departures heading to this station. </p><p>**Type:** `string` **OPTIONAL**<br>**Example:** `"000954609"`<br>**Default Value:** `""`</p><p>**Note:** It is not neccessary to find the ID of the end station. Just use the next station which is on the route you are after.<br>It is not possible to list multiple IDs. If you want to display different directions for one station use multiple instances of this module.</p>|
-| `ignoredLines`                    | <p>An array of strings describing the lines you want to exclude from the displayed departures.</p><p>**Type:** `array` **OPTIONAL** <br>**Example:** `[ "STR 11", "STR 10" ]` (Displays all lines except tram 10 and 11.)<br>**Default Value:** `[]`</p><p>**Note:** You need to provide the line name exactly as they are otherwise displayed. This setting is case sensitive. Blanks need to be exactly as they are display. If a line is usually displayes as `BUS  89` (two blanks) you need to type exactly that into the array with two blanks. </p>|
+| `ignoredLines`                    | <p>An array of strings describing the lines you want to exclude from the displayed departures.</p><p>**Type:** `array` **OPTIONAL** <br>**Example:** `[ "STR 11", "STR 10" ]` (Displays all lines except tram 10 and 11.)<br>**Default Value:** `[]`</p><p>**Note:** You need to provide the line names exactly as they are otherwise displayed. This setting is case sensitive. Blanks need to be exactly as they are display. If a line is usually displayes as `BUS  89` (two blanks) you need to type exactly that into the array. </p>|
 | `excludedTransportationTypes`     | <p>An array of strings describing the transportation types you want to exclude from the displayed departures.</p><p>**Type:** `array` **OPTIONAL** <br>**Example:** `[ "suburban", "bus" ]`<br>**Default Value:** `[]`<br>**Possible Values:** <table><tr><th>Type</th><th>Use in Germany</th></tr><tr><td>`"bus"`</td><td>bus</td></tr><tr><td>`"ferry"`</td><td>F&auml;hre</td></tr><tr><td>`"express"`</td><td>?</td></tr><tr><td>`"national"`</td><td>IC trains</td></tr><tr><td>`"nationalExp"`</td><td>ICE trains</td></tr><tr><td>`"regional"`</td><td>RB or RE</td></tr><tr><td>`"suburban"`</td><td>S-Bahn</td></tr><tr><td>`"subway"`</td><td>U-Bahn</td></tr><tr><td>`"tram"`</td><td>Tram</td></tr><tr><td>`"taxi"`</td><td>Taxi</td></tr></table></p>|
 | `timeToStation`                   | <p>An integer indicating how long it takes you to get to the station.</p><p>**Type:** `integer` **OPTIONAL**<br>**Example:** `5`<br>**Default Value:** `10` </p><p>**Note:** The time is given in minutes.</p>|
-| `timeInFuture`                    | <p>An integer indication how far in the future a departure can be.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60` (Show departures for the next hour.)<br>**Default Value:** `10`</p><p>**Note:** The time is given in minutes.<br>Use this setting on stations where there is a big time gap between departures. This way you will see more than one or two departures.</p>|
-| `marqueeLongDirections`           | <p>A boolean value indication whether you want scrolling long destination name or not.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true`</p><p>**Note:** If set to `true` destination name longer than 24 characters will scroll through the display. If set to `false` names will be truncated at 24 characters.</p>|
+| `timeInFuture`                    | <p>An integer indicating how far in the future a departure can be to be still included in the shown departures.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `60` (Show departures for the next hour.)<br>**Default Value:** `10`</p><p>**Note:** The time is given in minutes.<br>Use this setting on stations where there is a big time gap between departures. This way you will see more than one or two departures.</p>|
+| `marqueeLongDirections`           | <p>A boolean value indicating whether you want scrolling long destination name or not.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true`</p><p>**Note:** If set to `true` destination names longer than 24 characters will scroll through the display. If set to `false` names will be truncated at 24 characters.</p>|
 | `showColoredLineSymbols`          | <p>A boolean value indicating whether the line symbols should be colored or black and white.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true`</p><p>**Note:** If set to `true` it is possible to decorate the line labels with the colors which are used in your town. This module comes with decorations for Leipzig. To provide your own colors see [Providing a custom css file](#providing-a-custom-css-file).</p>|
-| `useColorForRealtimeInfo`         | <p>A boolean value indicating whether delays should be displayed in color.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true` </p><p>**Note:** If set to `true` a delay will be displayed in red. Values `<= 0` (transport arrives in time or early) will be displayed in green. If you want to customize that see [Providing a custom css file](#providing-a-custom-css-file). </p>|
-| `showTableHeaders`                | <p>A boolean indicating whether table header should be shown or not.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false`<br>**Default Value:** `true`</p><p>**Note:** If set to `false` no table headings like “time” or “direction” will be shown. Also no symbols are shown.</p>|
-| `showTableHeadersAsSymbols`       | <p>A boolean value indication whether table header should be shown as symbols or text.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true` </p><p>**Note:** If set to `true` table headers will use symbols else text will be shown. The shown text is available in English and German. Feel free to add translations to this project.</p>|
+| `useColorForRealtimeInfo`         | <p>A boolean value indicating whether delays should be displayed in color.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true` </p><p>**Note:** If set to `true` a delay will be displayed in red. Values `<= 0` (transport arrives in time or early) will be displayed in green. If you want to customize that see [Providing a custom css file](#customizing-the-color-for-delays). </p>|
+| `showTableHeaders`                | <p>A boolean indicating whether a table header should be shown or not.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false`<br>**Default Value:** `true`</p><p>**Note:** If set to `false` no table headings like “time” or “direction” will be shown. Also no symbols are shown.</p>|
+| `showTableHeadersAsSymbols`       | <p>A boolean value indicating whether table headers should be shown as symbols or text.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true` </p><p>**Note:** If set to `true` table headers will use symbols, else text will be shown. This setting is only effective if `showTableHeaders` is set to `true`. The shown text is available in English and German. Feel free to add translations to this project.</p>|
 | `maxUnreachableDepartures`        | <p>An integer value denoting how many unreachable departures should be displayed.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `3`<br>**Default Value:** `0`</p><p>**Note:** A departure is unreachable if you can't reach the station in time for the departure with respect to your `timeToStation` setting.<br>Sometimes it is useful to set this option to a value greater than `0` if you are the type of person which walks really fast. Maybe other users of the mirror usually take 10 minutes to the station but you take only 5. So you’ll see also departures the other users couldn’t reach.</p>|
 | `maxReachableDepartures`          | <p>An integer value denoting how many reachable departures should be displayed.</p><p>**Type:** `integer` **OPTIONAL** <br>**Example:** `5` <br>**Default Value:** `7` </p><p>**Note:** A departure is reachable if you can make it to the station in time for the departure with respect to your `timeToStation` setting.</p>|
 | `fadeUnreachableDepartures`       | <p>A boolean value indicating whether unreachable departures should be dimmed.</p><p>**Type:** `boolean` **OPTIONAL** <br>**Example:** `false` <br>**Default Value:** `true` </p>|
@@ -149,9 +156,12 @@ Here is an example for an entry in `config.js`
 ```
 
 
-## Notes
+## Mulitple instances
 
-It is possible to use multiple instances of this module even using the same `stationID`. So you can display in one instance something like “main station heading eastbound” and in another instance “main station heading westbound”
+It is possible to use multiple instances of this module just by adding another entry of the MMM-PublicTransportHafas module to the `config.js` of your mirror. 
+
+You can even use the same `stationID` in different instances. So you can display in one instance something like “main station heading eastbound” and in another instance “main station heading westbound”.
+
 
 ## Providing a custom css file
 
@@ -173,20 +183,20 @@ In Leipzig the tram lines 2, 8 and 9 use a yellow color. Since the lines share t
 
 ```css
 .str2, .str8, .str9 {
-  background-color: #F8C623;    // yellow background
-  color: black;                 // text color black
-  width: 1em;                   // the width is equal to the font size (the line symbol will be a square)
+  background-color: #F8C623;  /* yellow background */
+  color: black;               /* text color black */
+  width: 1em;                 /* the width is equal to the font size (the line symbol will be a square) */
 }
 ```
 
-Some night buses in Leipzig use a orangeish color. All bus symbols are circles in Leipzig.
+Some night buses in Leipzig use a orange-ish color. All bus symbols are circles in Leipzig.
 
 ```css
 .busn1, .busn1e, .busn5, .busn5e, .busn8, .busn8e {
-  background-color: #EE9F2E;    // orangeish background
-  border-radius: 1em;           // border radius is the same as the width so a circle will appear
-  color: #164585;               // blueish text color
-  width: 1em;                   // the width is equal to the font size (the line symbol will be a square, or in this case a circle)
+  background-color: #EE9F2E;  /* orange-ish background */
+  border-radius: 1em;         /* border radius is the same as the width so a circle will appear */
+  color: #164585;             /* blue-ish text color */
+  width: 1em;                 /* the width is equal to the font size (the line symbol will be a square, or in this case a circle) */
 }
 ```
 
@@ -197,3 +207,15 @@ Beside the departure time a small figure displays the delay as reported by the t
 ![Time with delay](img/time_with_delay.png) ![Time without delay](img/time_without_delay.png)
 
 Delays are displayed as red. No delay or negative delays (the transport will arrive early) are displayed in green. If you want to customize that include the classes `pthHasDelay` and `pthIsTooEarly` in your custom css file and make the appropriate settings.
+
+
+## Special Thanks
+
+* [Michael Teeuw](https://github.com/MichMich) for inspiring me and many others to build a MagicMirror module.
+* [Jannis Redmann](https://github.com/derhuerst) for creating the most useful [hafas-client](https://github.com/derhuerst/hafas-client) library which provides the data for this module.
+* The community of magicmirror.builders for help in the development process and all contributors for finding and fixing errors in this module.
+
+
+## Contributing
+
+If you find any problems, bugs or have questions, please [open a GitHub issue](https://github.com/raywo/MMM-PublicTransportHafas/issues) in this repository.
