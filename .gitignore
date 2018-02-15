@@ -92,3 +92,6 @@ jspm_packages
 
 *.iml
 package-lock.json
+
+## Apple stuff
+.AppleDouble/

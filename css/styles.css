@@ -22,7 +22,7 @@ them from the rest of the interface.
 }
 
 .pthTimeCell {
-  width: 5%;
+  text-align: left;
 }
 
 .pthRulerCell {
