@@ -45,7 +45,6 @@ Module.register("MMM-PublicTransportHafas", {
 
     this.sanitzeConfig();
 
-
     if (!this.config.stationID) {
       Log.error("stationID not set! " + this.config.stationID);
       this.error.message = this.translate("NO_STATION_ID_SET");
