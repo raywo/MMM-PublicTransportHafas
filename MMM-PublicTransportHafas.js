@@ -1,52 +1,116 @@
 "use strict";
 
-Module.register("MMM-PublicTransportLeipzig", {
+Module.register("MMM-PublicTransportHafas", {
 
   // default values
   defaults: {
-    name: "MMM-PublicTransportLeipzig",
+    // Module misc
+    name: "MMM-PublicTransportHafas",
     hidden: false,
+    updatesEvery: 120,                  // How often should the table be updated in s?
+
+    // Header
     headerPrefix: "",
-    stationName: "Wilhelm-Leuschner-Platz",
-    stationId: "12992",
-    directions: [],                     // Which directions (final destinations) should be included? (You need to list all possible final destinations to see all possible departures. For instance for Str 1 you need to list "Schönefeld" and "Mockau" to see Str 1 and Str 1E.)
+    headerAppendix: "",
+
+    // Departures options
+    direction: "",                      // Show only departures heading to this station. (A station ID.)
     ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
     excludedTransportationTypes: [],    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
-    marqueeLongDirections: true,        // Use Marquee effect for long station names?
     timeToStation: 10,                  // How long do you need to walk to the next Station?
-    interval: 120,                      // How often should the table be updated in s?
+    timeInFuture: 10,                   // Show departures for the next *timeInFuture* minutes.
+
+    // Look and Feel
+    marqueeLongDirections: true,        // Use Marquee effect for long station names?
     showColoredLineSymbols: true,       // Want colored line symbols?
     useColorForRealtimeInfo: true,      // Want colored real time information (timeToStation, early)?
     showTableHeaders: true,             // Show table headers?
     showTableHeadersAsSymbols: true,    // Table Headers as symbols or written?
-    maxUnreachableDepartures: 3,        // How many unreachable departures should be shown?
+    maxUnreachableDepartures: 0,        // How many unreachable departures should be shown?
     maxReachableDepartures: 7,          // How many reachable departures should be shown?
     fadeUnreachableDepartures: true,
     fadeReachableDepartures: true,
-    fadePointForReachableDepartures: 0.25
+    fadePointForReachableDepartures: 0.25,
+    customLineStyles: "leipzig",        // Prefix for the name of the custom css file. ex: Leipzig-lines.css (case sensitive)
+    showOnlyLineNumbers: false          // Display only the line number instead of the complete name, i. e. "11" instead of "STR 11"
   },
 
 
   start: function () {
+    Log.info("Starting module: " + this.name + " with identifier: " + this.identifier);
 
+    this.departures = [];
+    this.initialized = false;
+    this.error = {};
+
+    this.sanitzeConfig();
+
+    if (!this.config.stationID) {
+      Log.error("stationID not set! " + this.config.stationID);
+      this.error.message = this.translate("NO_STATION_ID_SET");
+
+      return;
+    }
+
+    let fetcherOptions = {
+      identifier: this.identifier,
+      stationID: this.config.stationID,
+      timeToStation: this.config.timeToStation,
+      timeInFuture: this.config.timeInFuture,
+      direction: this.config.direction,
+      ignoredLines: this.config.ignoredLines,
+      excludedTransportationTypes: this.config.excludedTransportationTypes,
+      maxReachableDepartures: this.config.maxReachableDepartures,
+      maxUnreachableDepartures: this.config.maxUnreachableDepartures
+    };
+
+    this.sendSocketNotification("CREATE_FETCHER", fetcherOptions);
   },
 
 
   getDom: function () {
+    let domBuilder = new DomBuilder(this.config);
 
+    if (this.hasErrors()) {
+      return domBuilder.getSimpleDom(this.error.message);
+    }
+
+    if (!this.initialized) {
+      return domBuilder.getSimpleDom(this.translate("LOADING"));
+    }
+
+    let headings = {
+      time: this.translate("PTH_DEPARTURE_TIME"),
+      line: this.translate("PTH_LINE"),
+      direction: this.translate("PTH_TO")
+    };
+
+    let noDeparturesMessage = this.translate("PTH_NO_DEPARTURES");
+
+    return domBuilder.getDom(this.departures, headings, noDeparturesMessage);
   },
+
 
   getStyles: function () {
-    return [
-      'style.css',
-      'font-awesome.css'
+    let styles = [
+      this.file("css/styles.css"),
+      "font-awesome.css"
     ];
+
+    if (this.config.customLineStyles !== "") {
+      let customStyle = "css/" + this.config.customLineStyles + "-lines.css";
+      styles.push(this.file(customStyle));
+    }
+
+    return styles;
   },
+
 
   getScripts: function () {
     return [
       "moment.js",
-      //this.file("DomCreator.js")
+      this.file("core/DomBuilder.js"),
+      this.file("core/TableBodyBuilder.js")
     ];
   },
 
@@ -60,34 +124,72 @@ Module.register("MMM-PublicTransportLeipzig", {
 
 
   socketNotificationReceived: function (notification, payload) {
-    if (notification === 'FETCHER_INIT') {
-      if (this.isThisStation(payload)) {
-        this.stationName = payload.stationName;
-        this.loaded = true;
-      }
+    if (!this.isForThisStation(payload)) {
+      return;
     }
 
-    if (notification === 'DEPARTURES') {
-      this.config.loaded = true;
+    switch (notification) {
+      case "FETCHER_INITIALIZED":
+        this.initialized = true;
+        this.startFetchingLoop(this.config.updatesEvery);
 
-      if (this.isThisStation(payload)) {
-        // Empty error object
+        break;
+
+      case "DEPARTURES_FETCHED":
+        // reset error object
         this.error = {};
-        // Proceed with normal operation
-        this.departuresArray = payload.departuresArray;
-        this.updateDom(3000);
-      }
+        this.departures = payload.departures;
+        this.updateDom(2000);
+
+        break;
+
+      case "FETCH_ERROR":
+        this.error = payload.error;
+        this.departures = [];
+        this.updateDom(2000);
+
+        break;
+    }
+  },
+
+
+  isForThisStation: function (payload) {
+    return payload.identifier === this.identifier;
+  },
+
+
+  sanitzeConfig: function () {
+    if (this.config.updatesEvery < 30) {
+      this.config.updatesEvery = 30;
     }
 
-    if (notification === 'FETCH_ERROR') {
-      this.config.loaded = true;
-
-      if (this.isThisStation(payload)) {
-        // Empty error object
-        this.error = payload;
-        this.updateDom(3000);
-      }
+    if (this.config.timeToStation < 0) {
+      this.config.timeToStation = 0;
     }
-  }
+
+    if (this.config.maxUnreachableDepartures < 0) {
+      this.config.maxUnreachableDepartures = 0;
+    }
+
+    if (this.config.maxReachableDepartures < 0) {
+      this.config.maxReachableDepartures = this.defaults.maxReachableDepartures;
+    }
+  },
+
+
+  startFetchingLoop: function(interval) {
+    // start immediately ...
+    this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
+
+    // ... and then repeat in the given interval
+    setInterval(() => {
+      this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
+    }, interval * 1000);
+  },
+
+
+  hasErrors: function () {
+    return (Object.keys(this.error).length > 0);
+  },
 });
 
