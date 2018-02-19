@@ -176,25 +176,29 @@ class TableBodyBuilder {
 
   getLineCssClass(lineName) {
     if (this.config.showColoredLineSymbols) {
-      let className = "pthSign ";
-      let prefix = lineName.split(" ")[0];
-      let dbProducts = [ "RE", "RB", "IC", "ICE" ];
-
-      if (dbProducts.includes(prefix)) {
-        className += prefix.toLowerCase() + " pthDbStandard";
-
-        if (this.config.showOnlyLineNumbers) {
-          className += " " + prefix.toLowerCase() + "WithProductName";
-        }
-      } else {
-        className += lineName.replace(/\s/g, '').toLowerCase();
-      }
-
-      return className;
-
+      return this.getColoredCssClass(lineName);
     } else {
       return "pthSign pthBWLineSign";
     }
+  }
+
+
+  getColoredCssClass(lineName) {
+    let className = "pthSign ";
+    let prefix = lineName.split(" ")[0];
+    let dbProducts = ["RE", "RB", "IC", "ICE"];
+
+    if (dbProducts.includes(prefix)) {
+      className += prefix.toLowerCase() + " pthDbStandard";
+
+      if (this.config.showOnlyLineNumbers) {
+        className += " " + prefix.toLowerCase() + "WithProductName";
+      }
+    } else {
+      className += lineName.replace(/\s/g, "").toLowerCase();
+    }
+
+    return className;
   }
 
 
