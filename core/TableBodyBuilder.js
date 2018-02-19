@@ -62,12 +62,8 @@ class TableBodyBuilder {
     return row;
   }
 
-  getDeparturesTableRow(departure, index, departuresCount, unreachableCount) {
-    let time = departure.when;
-    let delay = departure.delay;
-    let line = departure.line.name;
-    let direction = departure.direction;
 
+  getDeparturesTableRow(departure, index, departuresCount, unreachableCount) {
     let row = document.createElement("tr");
     row.className = "bright";
 
@@ -78,25 +74,38 @@ class TableBodyBuilder {
     }
 
     this.config.tableHeaderOrder.forEach((key) => {
-      let cell;
-
-      switch (key) {
-        case "time":
-          cell = this.getTimeCell(time, delay);
-          break;
-        case "line":
-          cell = this.getLineCell(line);
-          break;
-        case "direction":
-          cell = this.getDirectionCell(direction);
-          break;
-      }
-
+      let cell = this.getCell(key, departure);
       row.appendChild(cell);
     });
 
     return row;
   }
+
+
+  getCell(key, departure) {
+    let cell;
+
+    switch (key) {
+      case "time":
+        let time = departure.when;
+        let delay = departure.delay;
+        cell = this.getTimeCell(time, delay);
+        break;
+
+      case "line":
+        let line = departure.line.name;
+        cell = this.getLineCell(line);
+        break;
+
+      case "direction":
+        let direction = departure.direction;
+        cell = this.getDirectionCell(direction);
+        break;
+    }
+
+    return cell;
+  }
+
 
   getTimeCell(departure, delay) {
     let time = this.getDisplayDepartureTime(departure, delay);
