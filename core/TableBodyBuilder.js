@@ -63,7 +63,7 @@ class TableBodyBuilder {
   }
 
   getDeparturesTableRow(departure, index, departuresCount, unreachableCount) {
-    let time = this.getDepartureTime(departure.when, departure.delay);
+    let time = departure.when;
     let delay = departure.delay;
     let line = departure.line.name;
     let direction = departure.direction;
@@ -84,11 +84,16 @@ class TableBodyBuilder {
     return row;
   }
 
-  getTimeCell(time, delay) {
+  getTimeCell(departure, delay) {
+    let time = this.getDisplayDepartureTime(departure, delay);
+
     let cell = document.createElement("td");
-    cell.appendChild(document.createTextNode(time));
-    cell.appendChild(this.getDelaySpan(delay));
     cell.className = "pthTimeCell";
+    cell.appendChild(document.createTextNode(time));
+
+    if (this.config.showAbsoluteTime) {
+      cell.appendChild(this.getDelaySpan(delay));
+    }
 
     return cell;
   }
@@ -117,10 +122,15 @@ class TableBodyBuilder {
   }
 
 
-  getDepartureTime(when, delay) {
-    let time = moment(when).subtract(delay, "seconds");
+  getDisplayDepartureTime(when, delay) {
+    if (this.config.showAbsoluteTime) {
+      let time = moment(when).subtract(delay, "seconds");
+      return time.format("LT");
 
-    return time.format("LT");
+    } else {
+      let time = moment(when);
+      return time.fromNow();
+    }
   }
 
 
