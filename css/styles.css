@@ -129,18 +129,18 @@ them from the rest of the interface.
   color: white;
 }
 
-.ice:before {
+.iceWithProductName:before {
   content: "ICE ";
 }
 
-.ic:before {
+.icWithProductName:before {
   content: "IC ";
 }
 
-.re:before {
+.reWithProductName:before {
   content: "RE ";
 }
 
-.rb:before {
+.rbWithProductName:before {
   content: "RB ";
 }

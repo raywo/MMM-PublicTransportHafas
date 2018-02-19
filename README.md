@@ -69,7 +69,7 @@ Running the script:
 change to `MagicMirror/modules/MMM-PublicTransportHafas` then start the script by typing
 
 ```bash
-node ./convenience/query_station.js 
+node ./convenience/query_stations.js 
 ```
 
 The following example shows a query for "Leipzig, Wilhelm-Leuschner-Platz". This station is included two times in the result. You have to experiment which ID gives the best results.
