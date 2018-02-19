@@ -77,9 +77,23 @@ class TableBodyBuilder {
       row.style.opacity = this.getUnreachableRowOpacity(index, unreachableCount);
     }
 
-    row.appendChild(this.getTimeCell(time, delay));
-    row.appendChild(this.getLineCell(line));
-    row.appendChild(this.getDirectionCell(direction));
+    this.config.tableHeaderOrder.forEach((key) => {
+      let cell;
+
+      switch (key) {
+        case "time":
+          cell = this.getTimeCell(time, delay);
+          break;
+        case "line":
+          cell = this.getLineCell(line);
+          break;
+        case "direction":
+          cell = this.getDirectionCell(direction);
+          break;
+      }
+
+      row.appendChild(cell);
+    });
 
     return row;
   }
@@ -180,6 +194,10 @@ class TableBodyBuilder {
       content = document.createElement("span");
       content.innerHTML = direction;
       className += " pthMarquee";
+    }
+
+    if (!this.config.showAbsoluteTime) {
+      className += " pthTextLeft";
     }
 
     return this.getTableCell(content, className);

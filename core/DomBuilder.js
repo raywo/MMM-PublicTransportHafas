@@ -88,9 +88,10 @@ class DomBuilder {
     let headerRow = document.createElement("tr");
     headerRow.className = "bold dimmed";
 
-    headerRow.appendChild(this.getHeaderCell(headings.time, this.headingSymbols.time));
-    headerRow.appendChild(this.getHeaderCell(headings.line, this.headingSymbols.line, "pthTextCenter"));
-    headerRow.appendChild(this.getHeaderCell(headings.direction, this.headingSymbols.direction, "pthTextCenter"));
+    this.config.tableHeaderOrder.forEach((key) => {
+      let values = this.getHeadingValues(key, headings);
+      headerRow.appendChild(this.getHeaderCell(values));
+    });
 
     tHead.appendChild(headerRow);
 
@@ -98,7 +99,26 @@ class DomBuilder {
   }
 
 
-  getHeaderCell(textContent, symbol, cssClass = "") {
+  getHeadingValues(key, headings) {
+    let result = {
+      text: headings[key],
+      symbol: this.headingSymbols[key],
+      cssClass: ""
+    };
+
+    if (key === "line" || key === "direction") {
+      result.cssClass = "pthTextCenter";
+    }
+
+    return result;
+  }
+
+
+  getHeaderCell(values) {
+    let textContent = values.text;
+    let symbol = values.symbol;
+    let cssClass = values.cssClass;
+
     let cell = document.createElement("td");
     cell.className = cssClass;
 
