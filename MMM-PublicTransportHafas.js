@@ -24,6 +24,7 @@ Module.register("MMM-PublicTransportHafas", {
     marqueeLongDirections: true,        // Use Marquee effect for long station names?
     showColoredLineSymbols: true,       // Want colored line symbols?
     useColorForRealtimeInfo: true,      // Want colored real time information (timeToStation, early)?
+    showAbsoluteTime: true,             // How should the departure time be displayed? "15:10" (absolute) or "in 5 minutes" (relative)
     showTableHeaders: true,             // Show table headers?
     showTableHeadersAsSymbols: true,    // Table Headers as symbols or written?
     maxUnreachableDepartures: 0,        // How many unreachable departures should be shown?
