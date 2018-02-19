@@ -25,16 +25,24 @@ them from the rest of the interface.
   text-align: left;
 }
 
-.pthRulerCell {
-  border-bottom: 1px dotted #666;
-  border-spacing: 10px;
-  line-height: 0;
+.pthDirectionCell {
+  max-width: 24ch;
+  min-width: 16ch;
+  overflow: hidden;
+  padding-left: 1ch;
+  padding-right: 1ch;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pthRulerCell {
   border-bottom: 1px dotted #666;
   border-spacing: 10px;
   line-height: 0;
+}
+
+.pthTextLeft {
+  text-align: left;
 }
 
 .pthTextRight {
@@ -43,13 +51,6 @@ them from the rest of the interface.
 
 .pthTextCenter {
   text-align: center;
-}
-
-.pthDirectionCell {
-  max-width: 24ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .pthDelay {
