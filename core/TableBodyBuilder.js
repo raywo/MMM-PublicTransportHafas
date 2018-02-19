@@ -182,6 +182,10 @@ class TableBodyBuilder {
 
       if (dbProducts.includes(prefix)) {
         className += prefix.toLowerCase() + " pthDbStandard";
+
+        if (this.config.showOnlyLineNumbers) {
+          className += " " + prefix.toLowerCase() + "WithProductName";
+        }
       } else {
         className += lineName.replace(/\s/g, '').toLowerCase();
       }
