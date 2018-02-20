@@ -18,7 +18,7 @@ Module.register("MMM-PublicTransportHafas", {
     ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
     excludedTransportationTypes: [],    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: StN for tram, BuN for bus, s for suburban
     timeToStation: 10,                  // How long do you need to walk to the next Station?
-    timeInFuture: 10,                   // Show departures for the next *timeInFuture* minutes.
+    timeInFuture: 40,                   // Show departures for the next *timeInFuture* minutes.
 
     // Look and Feel
     marqueeLongDirections: true,        // Use Marquee effect for long station names?
@@ -167,6 +167,10 @@ Module.register("MMM-PublicTransportHafas", {
 
     if (this.config.timeToStation < 0) {
       this.config.timeToStation = 0;
+    }
+
+    if (this.config.timeInFuture < this.config.timeToStation + 30) {
+      this.config.timeInFuture = this.config.timeToStation + 30;
     }
 
     if (this.config.maxUnreachableDepartures < 0) {
