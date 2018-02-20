@@ -25,13 +25,22 @@ class TableBodyBuilder {
       tBody.appendChild(row);
 
       let nextDeparture = departures[index + 1];
-
-      if (!departure.isReachable && nextDeparture.isReachable) {
-        tBody.appendChild(this.getRulerRow());
-      }
+      this.insertRulerIfNecessary(tBody, departure, nextDeparture, noDepartureMessage);
     });
 
     return tBody;
+  }
+
+
+  insertRulerIfNecessary(tBody, departure, nextDeparture, noDepartureMessage) {
+    if (nextDeparture && !departure.isReachable && nextDeparture.isReachable) {
+      tBody.appendChild(this.getRulerRow());
+    }
+
+    if (!departure.isReachable && !nextDeparture) {
+      tBody.appendChild(this.getRulerRow());
+      tBody.appendChild(this.getDeparturesTableNoDeparturesRow(noDepartureMessage));
+    }
   }
 
 
