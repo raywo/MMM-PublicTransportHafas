@@ -1,6 +1,6 @@
 "use strict";
 
-class TableBodyBuilder {
+class PTHAFASTableBodyBuilder {
   constructor(config) {
     this.config = config;
   }
@@ -213,12 +213,12 @@ class TableBodyBuilder {
 
   getDirectionCell(direction) {
     let truncatePosition = 26;
-    let content = direction;
+    let content = this.getProcessedDirection(direction);
     let className = "pthDirectionCell";
 
     if (this.config.marqueeLongDirections && content.length > truncatePosition) {
       content = document.createElement("span");
-      content.innerHTML = direction;
+      content.innerHTML = this.getProcessedDirection(direction);
       className += " pthMarquee";
     }
 
@@ -227,6 +227,18 @@ class TableBodyBuilder {
     }
 
     return this.getTableCell(content, className);
+  }
+
+
+  getProcessedDirection(direction) {
+    let replacements = this.config.replaceInDirections;
+    let processed = direction;
+
+    Object.keys(replacements).forEach((key) => {
+      processed = processed.replace(new RegExp(key, "g"), replacements[key]);
+    });
+
+    return processed;
   }
 
 

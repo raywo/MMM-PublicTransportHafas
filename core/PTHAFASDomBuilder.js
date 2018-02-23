@@ -76,7 +76,7 @@ class PTHAFASDomBuilder {
       table.appendChild(tableHeader);
     }
 
-    let tableBodyBuilder = new TableBodyBuilder(this.config);
+    let tableBodyBuilder = new PTHAFASTableBodyBuilder(this.config);
     let tableBody = tableBodyBuilder.getDeparturesTableBody(departures, noDepartureMessage);
     table.appendChild(tableBody);
 

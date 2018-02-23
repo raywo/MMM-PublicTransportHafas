@@ -22,6 +22,7 @@ Module.register("MMM-PublicTransportHafas", {
 
     // Look and Feel
     marqueeLongDirections: true,        // Use Marquee effect for long station names?
+    replaceInDirections: {},            // key-value pairs which are used to replace `key` by `value` in the displayed directions
     showColoredLineSymbols: true,       // Want colored line symbols?
     useColorForRealtimeInfo: true,      // Want colored real time information (timeToStation, early)?
     showAbsoluteTime: true,             // How should the departure time be displayed? "15:10" (absolute) or "in 5 minutes" (relative)
@@ -112,7 +113,7 @@ Module.register("MMM-PublicTransportHafas", {
     return [
       "moment.js",
       this.file("core/PTHAFASDomBuilder.js"),
-      this.file("core/TableBodyBuilder.js")
+      this.file("core/PTHAFASTableBodyBuilder.js")
     ];
   },
 
