@@ -1,6 +1,6 @@
 {
   "name": "MMM-PublicTransportHafas",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Public transport module for MagicMirror 2 driven by hafas-client data.",
   "repository": {
     "type": "git",
@@ -19,7 +19,9 @@
     "email": "ray@skillbird.de",
     "url": "https://github.com/raywo"
   },
-  "contributors": "https://github.com/raywo/MMM-PublicTransportHafas/graphs/contributors",
+  "contributors": [
+    "https://github.com/raywo/MMM-PublicTransportHafas/graphs/contributors"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/raywo/MMM-PublicTransportHafas/issues"

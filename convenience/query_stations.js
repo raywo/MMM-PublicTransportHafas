@@ -30,7 +30,9 @@ rl.question("Geben Sie eine Adresse oder einen Stationsnamen ein: ", (answer) =>
 
   const opt = {
     results: 10,
-    stations: true
+    stations: true,
+    adresses: false,
+    poi: false
   };
 
   client.locations(answer, opt).then((response) => {
