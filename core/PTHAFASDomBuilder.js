@@ -1,6 +1,7 @@
 "use strict";
 
-class DomBuilder {
+
+class PTHAFASDomBuilder {
 
   constructor(config) {
     this.config = config;

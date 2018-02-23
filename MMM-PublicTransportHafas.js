@@ -71,7 +71,7 @@ Module.register("MMM-PublicTransportHafas", {
 
 
   getDom: function () {
-    let domBuilder = new DomBuilder(this.config);
+    let domBuilder = new PTHAFASDomBuilder(this.config);
 
     if (this.hasErrors()) {
       return domBuilder.getSimpleDom(this.error.message);
@@ -111,7 +111,7 @@ Module.register("MMM-PublicTransportHafas", {
   getScripts: function () {
     return [
       "moment.js",
-      this.file("core/DomBuilder.js"),
+      this.file("core/PTHAFASDomBuilder.js"),
       this.file("core/TableBodyBuilder.js")
     ];
   },
