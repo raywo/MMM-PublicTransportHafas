@@ -12,7 +12,7 @@ MMM-PublicTransportHafas is a module for the [MagicMirror](https://github.com/Mi
 
 
 
-It shows live public transport information in Germany for all stations known to the Deutsche Bahn system. Most public transportation providers in Germany providing information for that system so the coverage should be quite good. The data is provided by the most beautiful [hafas-client](https://github.com/derhuerst/hafas-client) by [Jannis Redmann (derhuerst)](https://github.com/derhuerst). Even in other european contries this module should work as HAFAS is widely used throughout Europe.
+It shows live public transport information in Germany for all stations known to the Deutsche Bahn system. Most public transportation providers in Germany providing information for that system so the coverage should be quite good. The data is provided by the most beautiful [hafas-client](https://github.com/derhuerst/hafas-client) by [Jannis Redmann (derhuerst)](https://github.com/derhuerst). (Please support him on [Patreon](https://www.patreon.com/derhuerst).) Even in other european contries this module should work as HAFAS is widely used throughout Europe.
 
 This module is intended to replace [MMM-PublicTransportLeipzig](https://github.com/raywo/MMM-PublicTransportLeipzig) since it uses the very unrealiable data provided by the LVB (Leipziger Verkehrsbetriebe). Thus the colors for the tram lines match the pattern used in Leipzig. But you can very easy adapt that to your needs. See [Providing a custom css file](#providing-a-custom-css-file).
 
@@ -215,7 +215,7 @@ Delays are displayed as red. No delay or negative delays (the transport will arr
 ## Special Thanks
 
 * [Michael Teeuw](https://github.com/MichMich) for inspiring me and many others to build a MagicMirror module.
-* [Jannis Redmann](https://github.com/derhuerst) for creating the most useful [hafas-client](https://github.com/derhuerst/hafas-client) library which provides the data for this module.
+* [Jannis Redmann](https://github.com/derhuerst) for creating the most useful [hafas-client](https://github.com/derhuerst/hafas-client) library which provides the data for this module. Please support him on [Patreon](https://www.patreon.com/derhuerst).
 * The community of magicmirror.builders for help in the development process and all contributors for finding and fixing errors in this module.
 
 
