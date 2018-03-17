@@ -33,6 +33,6 @@
   "dependencies": {
     "arr-diff": "^4.0.0",
     "array-unique": "^0.3.2",
-    "hafas-client": "^2.3.4"
+    "hafas-client": "^2.4.2"
   }
 }
