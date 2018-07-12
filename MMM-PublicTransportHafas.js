@@ -1,5 +1,11 @@
 "use strict";
 
+//Ajout AgP - 12/07/2018	
+//pour gerer le PIR et le module.hidden en meme temps
+var UserPresence = true; // par défaut on est présent (pas de sensor PIR pour couper)
+var ModulePublicTransportHafasHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
+//Fin ajout AgP
+
 Module.register("MMM-PublicTransportHafas", {
 
   // default values
@@ -8,6 +14,7 @@ Module.register("MMM-PublicTransportHafas", {
     name: "MMM-PublicTransportHafas",
     hidden: false,
     updatesEvery: 120,                  // How often should the table be updated in s?
+	updatesIntervalID: 0, 				// AgP - Useless for users, but necessary to stop and start auto update for each module instance
 
     // Header
     headerPrefix: "",
@@ -70,6 +77,43 @@ Module.register("MMM-PublicTransportHafas", {
     this.sendSocketNotification("CREATE_FETCHER", fetcherOptions);
   },
 
+	
+	//Modif AgP42 - 12/07/2018
+	suspend: function() { //fct core appelée quand le module est caché
+		ModulePublicTransportHafasHidden = true; //module hidden
+		//Log.log("Fct suspend - Module PublicTransportHafas caché" + this.config.stationName);
+		this.GestionUpdateIntervalHafas(); //on appele la fonction qui gere tous les cas
+	},
+	
+	resume: function() { //fct core appelée quand le module est affiché
+		ModulePublicTransportHafasHidden = false;
+		//Log.log("Fct resume - Module PublicTransportHafas AFFICHE" + this.config.stationName);
+		this.GestionUpdateIntervalHafas();	
+	},
+
+	notificationReceived: function(notification, payload) {
+		if (notification === "USER_PRESENCE") { // notification envoyée par le module MMM-PIR-Sensor. Voir sa doc
+			//Log.log("NotificationReceived USER_PRESENCE = " + payload);
+			UserPresence = payload;
+			this.GestionUpdateIntervalHafas();
+		}
+	},
+	
+	GestionUpdateIntervalHafas: function() {
+		if (UserPresence === true && ModulePublicTransportHafasHidden === false){ // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché
+			var self = this;
+			//Log.log(this.config.stationName + " est affiché et user present ! On l'update");
+	
+			// update now and start again the update timer
+			this.startFetchingLoop(this.config.updatesEvery);
+
+		}else{ // (UserPresence = false OU ModulePublicTransportHafasHidden = true)
+			//Log.log("Personne regarde : on stop l'update !" + this.config.stationName);
+			clearInterval(this.updatesIntervalID); // on arrete l'intervalle d'update en cours
+			this.updatesIntervalID=0; //on reset la variable
+		}
+	},
+	//Fin AgP
 
   getDom: function () {
     let domBuilder = new PTHAFASDomBuilder(this.config);
@@ -139,6 +183,11 @@ Module.register("MMM-PublicTransportHafas", {
         break;
 
       case "DEPARTURES_FETCHED":
+      
+      //AgP debug
+      Log.log("Update Transport Berlin recue pour " + this.config.stationName);
+      //this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Transport Berlin recue"});
+     
         // reset error object
         this.error = {};
         this.departures = payload.departures;
@@ -189,9 +238,20 @@ Module.register("MMM-PublicTransportHafas", {
     this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
 
     // ... and then repeat in the given interval
-    setInterval(() => {
-      this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
-    }, interval * 1000);
+    
+    //AgP 12/07/2018
+    //Log.log("Hello, update module Transport demandé!! (non récurente)");
+	//this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Transport Berlin demandée"});
+    
+    if (this.updatesIntervalID === 0){//if this instance as no auto update defined, then we create one. Otherwise : nothing.
+		
+		this.updatesIntervalID = setInterval(() => {
+		  this.sendSocketNotification("FETCH_DEPARTURES", this.identifier);
+		}, interval * 1000);
+    
+    }
+    
+
   },
 
 
