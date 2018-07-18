@@ -1,10 +1,18 @@
+ /*
+  * Update by AgP42 the 18/07/2018
+  * 
+  * Modification added : 
+  * - Management of a PIR sensor with the module MMM-PIR-Sensor (by PaViRo). In case PIR module detect no user, 
+  * the update of the ToDoIst is stopped and will be requested again at the return of the user
+  * - Management of the "module.hidden" by the core system : same behaviour as "User_Presence" by the PIR sensor
+  * - Possibility to add the last update time from server at the end of the module. 
+  * This can be configured using "displayLastUpdate" and "displayLastUpdateFormat"
+  * */
+
 "use strict";
 
-//Ajout AgP - 12/07/2018	
-//pour gerer le PIR et le module.hidden en meme temps
-var UserPresence = true; // par défaut on est présent (pas de sensor PIR pour couper)
-var ModulePublicTransportHafasHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
-//Fin ajout AgP
+//UserPresence Management (PIR sensor)
+var UserPresence = true; //true by default, so no impact for user without a PIR sensor
 
 Module.register("MMM-PublicTransportHafas", {
 
@@ -14,12 +22,15 @@ Module.register("MMM-PublicTransportHafas", {
     name: "MMM-PublicTransportHafas",
     hidden: false,
     updatesEvery: 120,                  // How often should the table be updated in s?
-	updatesIntervalID: 0, 				// AgP - Useless for users, but necessary to stop and start auto update for each module instance
 
     // Header
     headerPrefix: "",
     headerAppendix: "",
 
+ 	//Display last update time
+	displayLastUpdate: false, //add or not a line after the tasks with the last server update time
+	displayLastUpdateFormat: 'dd - HH:mm:ss', //format to display the last update. See Moment.js documentation for all display possibilities
+    
     // Departures options
     direction: "",                      // Show only departures heading to this station. (A station ID.)
     ignoredLines: [],                   // Which lines should be ignored? (comma-separated list of line names)
@@ -48,6 +59,10 @@ Module.register("MMM-PublicTransportHafas", {
 
   start: function () {
     Log.info("Starting module: " + this.name + " with identifier: " + this.identifier);
+    
+    var ModulePublicTransportHafasHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
+	var updatesIntervalID = 0; 				// to stop and start auto update for each module instance
+	var lastUpdate = 0; 	//timestamp of the last module update. set at 0 at start-up
 
     this.departures = [];
     this.initialized = false;
@@ -80,13 +95,13 @@ Module.register("MMM-PublicTransportHafas", {
 	
 	//Modif AgP42 - 12/07/2018
 	suspend: function() { //fct core appelée quand le module est caché
-		ModulePublicTransportHafasHidden = true; //module hidden
+		this.ModulePublicTransportHafasHidden = true; //module hidden
 		//Log.log("Fct suspend - Module PublicTransportHafas caché" + this.config.stationName);
 		this.GestionUpdateIntervalHafas(); //on appele la fonction qui gere tous les cas
 	},
 	
 	resume: function() { //fct core appelée quand le module est affiché
-		ModulePublicTransportHafasHidden = false;
+		this.ModulePublicTransportHafasHidden = false;
 		//Log.log("Fct resume - Module PublicTransportHafas AFFICHE" + this.config.stationName);
 		this.GestionUpdateIntervalHafas();	
 	},
@@ -100,7 +115,7 @@ Module.register("MMM-PublicTransportHafas", {
 	},
 	
 	GestionUpdateIntervalHafas: function() {
-		if (UserPresence === true && ModulePublicTransportHafasHidden === false){ // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché
+		if (UserPresence === true && this.ModulePublicTransportHafasHidden === false){ // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché
 			var self = this;
 			//Log.log(this.config.stationName + " est affiché et user present ! On l'update");
 	
@@ -134,7 +149,21 @@ Module.register("MMM-PublicTransportHafas", {
 
     let noDeparturesMessage = this.translate("PTH_NO_DEPARTURES");
 
-    return domBuilder.getDom(this.departures, headings, noDeparturesMessage);
+    var wrapper = domBuilder.getDom(this.departures, headings, noDeparturesMessage);
+    
+    
+    
+    		// display the update time at the end, if defined so by the user config
+	if(this.config.displayLastUpdate){
+
+		var updateinfo = document.createElement("div");
+		updateinfo.className = "xsmall light align-left";
+		updateinfo.innerHTML = "Update : " + moment.unix(this.lastUpdate).format(this.config.displayLastUpdateFormat);
+		wrapper.appendChild(updateinfo);
+	}
+		
+	return wrapper;
+		
   },
 
 
@@ -178,15 +207,22 @@ Module.register("MMM-PublicTransportHafas", {
     switch (notification) {
       case "FETCHER_INITIALIZED":
         this.initialized = true;
-        this.startFetchingLoop(this.config.updatesEvery);
+  //      this.startFetchingLoop(this.config.updatesEvery); //--> pas besoin de le lancer au demarrage, 
+															//sera lancé par resume au 1er affichage
 
         break;
 
       case "DEPARTURES_FETCHED":
       
-      //AgP debug
-      Log.log("Update Transport Berlin recue pour " + this.config.stationName);
-      //this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Transport Berlin recue"});
+		//AgP      			
+		if(this.config.displayLastUpdate){
+			this.lastUpdate = Date.now() / 1000 ; //save the timestamp of the last update to be able to display it		
+		}
+			
+		Log.log("TransportHafas update OK, station : " + this.config.stationName + " at : " 
+			+ moment.unix(this.lastUpdate).format(this.config.displayLastUpdateFormat)); 
+			
+		//this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Transport Berlin recue"});
      
         // reset error object
         this.error = {};
@@ -239,7 +275,6 @@ Module.register("MMM-PublicTransportHafas", {
 
     // ... and then repeat in the given interval
     
-    //AgP 12/07/2018
     //Log.log("Hello, update module Transport demandé!! (non récurente)");
 	//this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Transport Berlin demandée"});
     
