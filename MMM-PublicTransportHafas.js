@@ -60,9 +60,9 @@ Module.register("MMM-PublicTransportHafas", {
   start: function () {
     Log.info("Starting module: " + this.name + " with identifier: " + this.identifier);
     
-    var ModulePublicTransportHafasHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
-	this.updatesIntervalID = 0; 	// to stop and start auto update for each module instance
-	var lastUpdate = 0; 	//timestamp of the last module update. set at 0 at start-up
+    this.ModulePublicTransportHafasHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
+    this.updatesIntervalID = 0; 	// to stop and start auto update for each module instance
+    this.lastUpdate = 0; 	//timestamp of the last module update. set at 0 at start-up
 
     this.departures = [];
     this.initialized = false;
