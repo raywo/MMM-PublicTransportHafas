@@ -1,14 +1,26 @@
 # MMM-PublicTransportHafas
 
+> [!IMPORTANT]
+> **This repository is no longer maintained and does not work anymore.**
+> The Deutsche Bahn HAFAS API it relies on has been shut down.
+>
+> Please use one of these actively maintained modules instead:
+>
+> - [KristjanESPERANTO/MMM-PublicTransportHafas](https://github.com/KristjanESPERANTO/MMM-PublicTransportHafas)
+>   – the direct successor of this module. It keeps the configuration
+>   options documented below, adds many more, and uses
+>   [db-vendo-client](https://github.com/public-transport/db-vendo-client)
+>   and current HAFAS profiles.
+> - [KristjanESPERANTO/MMM-PublicTransportHub](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub)
+>   – a module by the same maintainer that supports several data providers,
+>   including [Transitous](https://transitous.org/) with open data for most
+>   of Europe and beyond.
+>
+> Please open issues and feature requests in those repositories.
+> The documentation below describes the last release of this repository
+> and is kept for reference only.
+
 MMM-PublicTransportHafas is a module for the [MagicMirror](https://github.com/MichMich/MagicMirror) project by [Michael Teeuw](https://github.com/MichMich).
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/2742abc792b88536f6e2/maintainability)](https://codeclimate.com/github/raywo/MMM-PublicTransportHafas/maintainability) 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/2742abc792b88536f6e2/test_coverage)](https://codeclimate.com/github/raywo/MMM-PublicTransportHafas/test_coverage)
-[![Known Vulnerabilities](https://snyk.io/test/github/raywo/mmm-publictransporthafas/badge.svg?targetFile=package.json)](https://snyk.io/test/github/raywo/mmm-publictransporthafas?targetFile=package.json)
-[![Greenkeeper badge](https://badges.greenkeeper.io/raywo/MMM-PublicTransportHafas.svg)](https://greenkeeper.io/)
-[![dependency status](https://david-dm.org/raywo/MMM-PublicTransportHafas.svg)](https://david-dm.org/raywo/MMM-PublicTransportHafas)
-[![chat on gitter](https://badges.gitter.im/raywo.svg)](https://gitter.im/raywo)
-
 
 
 
